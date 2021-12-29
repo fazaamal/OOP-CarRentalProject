@@ -1,21 +1,19 @@
-public class PetrolCar extends Car{
-    private String transmission;
+public class FuelCar extends Car{
+    private String transmission, fuel;
     private double fuelCapacity, mpg;
 
-    PetrolCar(String make, String model, String type, String colour, String transmission, int year, int seats, double costPerDay,
+    FuelCar(String make, String model, String type, String colour, String transmission, String fuel, String imgPath, int year, int seats, double costPerDay,
                 double tyreSize, double weight, double fuelCapacity, double mpg){
-        setMake(make);
-        setModel(model);
-        setType(type);
-        setColour(colour);
-        setYear(year);
-        setSeats(seats);
-        setCostPerDay(costPerDay);
-        setTyreSize(tyreSize);
-        setWeight(weight);
-        setTransmission(transmission);
-        setFuelCapacity(fuelCapacity);
-        setMpg(mpg);
+        super(make, model, type, colour, imgPath, year, seats, costPerDay,
+                tyreSize, weight);
+
+        this.transmission = transmission;
+        this.fuelCapacity = fuelCapacity;
+        this.mpg = mpg;
+    }
+
+    public String getFuel() {
+        return fuel;
     }
 
     public String getTransmission() {
@@ -28,6 +26,10 @@ public class PetrolCar extends Car{
 
     public double getMpg() {
         return mpg;
+    }
+
+    public void setFuel(String fuel) {
+        this.fuel = fuel;
     }
 
     public void setTransmission(String transmission) {

@@ -1,7 +1,24 @@
 public class Car {
-    private String make, model, type, colour;
+    private String make, model, type, colour, imgPath;
     private int year, seats;
     private double costPerDay, tyreSize, weight;
+
+    public Car(String make, String model, String type, String colour, String imgPath, int year, int seats, double costPerDay, double tyreSize, double weight) {
+        this.make = make;
+        this.model = model;
+        this.type = type;
+        this.colour = colour;
+        this.imgPath = imgPath;
+        this.year = year;
+        this.seats = seats;
+        this.costPerDay = costPerDay;
+        this.tyreSize = tyreSize;
+        this.weight = weight;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
 
     public String getMake() {
         return make;
@@ -37,6 +54,10 @@ public class Car {
 
     public double getWeight() {
         return weight;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
     public void setMake(String make) {

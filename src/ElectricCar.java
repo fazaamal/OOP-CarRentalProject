@@ -1,20 +1,14 @@
 public class ElectricCar extends Car{
     private double batteryCapacity, chargeTime, drivingRange;
 
-    ElectricCar(String make, String model, String type, String colour, int year, int seats, double costPerDay,
+    ElectricCar(String make, String model, String type, String colour, String imgPath, int year, int seats, double costPerDay,
                 double tyreSize, double weight, double batteryCapacity, double chargeTime, double drivingRange){
-        setMake(make);
-        setModel(model);
-        setType(type);
-        setColour(colour);
-        setYear(year);
-        setSeats(seats);
-        setCostPerDay(costPerDay);
-        setTyreSize(tyreSize);
-        setWeight(weight);
-        setBatteryCapacity(batteryCapacity);
-        setChargeTime(chargeTime);
-        setDrivingRange(drivingRange);
+        super(make, model, type, colour, imgPath, year, seats, costPerDay,
+                tyreSize, weight);
+
+        this.batteryCapacity = batteryCapacity;
+        this.chargeTime = chargeTime;
+        this.drivingRange = drivingRange;
     }
 
     public double getBatteryCapacity() {
