@@ -12,6 +12,7 @@ import javafx.scene.text.*;
 import java.io.FileInputStream;
 
 public class MainStage extends Application {
+    //Initialising car objects
     Car teslaObj = new ElectricCar("Tesla", "Model S", "Sedan", "Grey", ".\\images\\teslaS.jpg", 2020,
             5, 70, 21, 2000, 99000, 8, 400);
     Car leafObj = new ElectricCar("Nissan", "Leaf", "Hatchback", "Grey", ".\\images\\nissanLeaf.jpg", 2019,
@@ -133,12 +134,12 @@ public class MainStage extends Application {
         vbox5.setPadding(new Insets(0, 0, 0 ,0));
         vbox5.getChildren().addAll(lblCarSpecs, carSpecs);
 
-        // Filters
+        // Filter left side
         Label lblCostInfo = new Label("Filters");
         lblCostInfo.setFont(Font.font("Courier", FontWeight.BOLD,
                 15));
 
-        Label lblCarFuel = new Label("Car fuel:");
+        Label lblCarFuel = new Label("Fuel:");
         lblCarFuel.setFont(Font.font("Courier", FontWeight.BOLD,
                 10));
 
