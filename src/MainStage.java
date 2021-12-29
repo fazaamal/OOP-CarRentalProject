@@ -47,9 +47,6 @@ public class MainStage extends Application {
         logo.setFitWidth(200);
 
         logo.setPreserveRatio(true);
-//        Text header1 = new Text(260, 28, "IIUM Car Rental");
-//        header1.setFont(Font.font("Courier", FontWeight.BOLD,
-//                26));
 
         //X70
         ImageView img1 = new ImageView(new Image(new FileInputStream(cars[0].getImgPath())));
@@ -135,7 +132,6 @@ public class MainStage extends Application {
         vbox5.setPrefHeight(235);
         vbox5.setPadding(new Insets(0, 0, 0 ,0));
         vbox5.getChildren().addAll(lblCarSpecs, carSpecs);
-//        vbox5.setStyle("-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 2px");
 
         // Filters
         Label lblCostInfo = new Label("Filters");
@@ -214,9 +210,7 @@ public class MainStage extends Application {
         HBox hboxBtn = new HBox(button);
         hboxBtn.setPadding(new Insets(0 , 0, 0 ,65));
 
-//        StackPane headerPane = new StackPane();
-//        gridpane.getChildren().add(header1);
-//        headerPane.setAlignment(header1, Pos.TOP_CENTER);
+        //Add gridpane children
         gridpane1.add(logo, 1, 0);
         gridpane1.add(vbox1, 0, 1);
         gridpane1.add(vbox2, 1, 1);
