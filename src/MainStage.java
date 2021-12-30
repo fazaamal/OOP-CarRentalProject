@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.text.*;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class MainStage extends Application {
     //Initialising car objects
@@ -49,7 +50,7 @@ public class MainStage extends Application {
 
         logo.setPreserveRatio(true);
 
-        //X70
+        //Top left listing
         ImageView img1 = new ImageView(new Image(new FileInputStream(cars[0].getImgPath())));
         img1.setFitHeight(125);
         img1.setFitWidth(200);
@@ -66,13 +67,13 @@ public class MainStage extends Application {
         vbox1.setStyle("-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 2px");
         vbox1.getChildren().addAll(img1, lbl1);
 
-        //leaf
-        ImageView img2 = new ImageView(new Image(new FileInputStream(cars[1].getImgPath())));
+        //Top right lsting
+        ImageView img2 = new ImageView();
         img2.setFitHeight(125);
         img2.setFitWidth(200);
         img2.setPreserveRatio(false);
 
-        Label lbl2 = new Label(cars[1].getMake() + " " + cars[1].getModel());
+        Label lbl2 = new Label();
         lbl2.setFont(Font.font("Courier", FontWeight.BOLD,
                 18));
 
@@ -83,13 +84,13 @@ public class MainStage extends Application {
         vbox2.setStyle("-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 2px");
         vbox2.getChildren().addAll(img2, lbl2);
 
-        //merc
-        ImageView img3 = new ImageView(new Image(new FileInputStream(cars[2].getImgPath())));
+        //Bottom left listing
+        ImageView img3 = new ImageView();
         img3.setFitHeight(125);
         img3.setFitWidth(200);
         img3.setPreserveRatio(false);
 
-        Label lbl3 = new Label(cars[2].getMake() + " " + cars[2].getModel());
+        Label lbl3 = new Label();
         lbl3.setFont(Font.font("Courier", FontWeight.BOLD,
                 18));
 
@@ -100,13 +101,13 @@ public class MainStage extends Application {
         vbox3.setStyle("-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 2px");
         vbox3.getChildren().addAll(img3, lbl3);
 
-        //tesla
-        ImageView img4 = new ImageView(new Image(new FileInputStream(cars[3].getImgPath())));
+        //Bottom right listing
+        ImageView img4 = new ImageView();
         img4.setFitHeight(125);
         img4.setFitWidth(200);
         img4.setPreserveRatio(false);
 
-        Label lbl4 = new Label(cars[3].getMake() + " " + cars[3].getModel());
+        Label lbl4 = new Label();
         lbl4.setFont(Font.font("Courier", FontWeight.BOLD,
                 18));
 
@@ -185,11 +186,12 @@ public class MainStage extends Application {
         CheckBox checkRed = new CheckBox("Red");
         CheckBox checkGrey = new CheckBox("Grey");
 
-        Label lblYear = new Label("Year:");
-        lblYear.setFont(Font.font("Courier", FontWeight.BOLD,
+        Label lblPrice = new Label("Max. price (RM):");
+        lblPrice.setFont(Font.font("Courier", FontWeight.BOLD,
                 10));
-        TextField textYear = new TextField();
-        textYear.setPromptText("Enter year");
+
+        TextField textPrice = new TextField();
+        textPrice.setPromptText("Enter max price");
 
         Label lblType = new Label("Type:");
         lblType.setFont(Font.font("Courier", FontWeight.BOLD,
@@ -204,19 +206,19 @@ public class MainStage extends Application {
         vbox7.setPrefWidth(200);
         vbox7.setPrefHeight(235);
         vbox7.setPadding(new Insets(0, 0, 0 ,0));
-        vbox7.getChildren().addAll(lblSpacer, lblColour, checkWhite, checkRed, checkGrey, lblYear, textYear, lblType, checkSedan, checkSuv, checkHatchback);
+        vbox7.getChildren().addAll(lblSpacer, lblColour, checkWhite, checkRed, checkGrey, lblPrice, textPrice, lblType, checkSedan, checkSuv, checkHatchback);
 
         Button button = new Button("Confirm");
         button.setAlignment(Pos.CENTER);
         HBox hboxBtn = new HBox(button);
         hboxBtn.setPadding(new Insets(0 , 0, 0 ,65));
 
+        VBox[] vboxes = {vbox1, vbox2, vbox3, vbox4};
+        Label[] lbls = {lbl1, lbl2, lbl3, lbl4};
+        ImageView[] imgs = {img1, img2, img3, img4};
+
         //Add gridpane children
         gridpane1.add(logo, 1, 0);
-        gridpane1.add(vbox1, 0, 1);
-        gridpane1.add(vbox2, 1, 1);
-        gridpane1.add(vbox3, 0, 2);
-        gridpane1.add(vbox4, 1, 2);
         gridpane1.add(vbox5, 2, 1);
         gridpane1.add(gridpane2, 2, 2);
         gridpane1.add(hboxBtn, 2, 3);
@@ -224,11 +226,34 @@ public class MainStage extends Application {
         gridpane2.add(vbox6, 0, 0);
         gridpane2.add(vbox7, 1, 0);
 
+        loadListings(cars, gridpane1, vboxes, lbls, imgs);
+
         Scene scene1 = new Scene(gridpane1, 650, 570);
 
         mainStage.setTitle("IIUM Car Rental"); // Set the stage title
         mainStage.setScene(scene1); // Place the scene in the stage
         mainStage.setResizable(false);
         mainStage.show(); // Display the stage
+    }
+
+    public void loadListings(Car[] cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs) throws FileNotFoundException {
+        int len = cars.length;
+        if(len>4){
+            len = 4;
+        }
+
+        for(int i=0; i<len; i++){
+            imgs[i].setImage(new Image(new FileInputStream(cars[i].getImgPath())));
+            lbls[i].setText(cars[i].getMake() + " " + cars[i].getModel());
+            if(i==0){
+                gridpane.add(vboxes[i], 0, 1);
+            }else if(i==1){
+                gridpane.add(vboxes[i], 1, 1);
+            }else if(i==2){
+                gridpane.add(vboxes[i], 0, 2);
+            }else{
+                gridpane.add(vboxes[i], 1, 2);
+            }
+        }
     }
 }
