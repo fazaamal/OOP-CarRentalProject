@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -12,6 +14,7 @@ import org.w3c.dom.Node;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 
 public class MainStage extends Application {
     //Initialising car objects
@@ -19,16 +22,20 @@ public class MainStage extends Application {
             5, 70, 21, 2000, 99000, 8, 400);
     Car leafObj = new ElectricCar("Nissan", "Leaf", "Hatchback", "Grey", ".\\images\\nissanLeaf.jpg", 2019,
             5, 45, 17, 1580, 50000, 6, 200);
+    Car kiaObj = new ElectricCar("Kia", "EV6", "Hatchback", "Red", ".\\images\\kia.jpg", 2021,
+            5, 55, 17, 2500, 82500, 6, 400);
     Car mercObj = new FuelCar("Mercedes", "E Class", "Sedan", "White", "Manual", "Diesel", ".\\images\\mercE.png",
             2021, 5, 80, 18, 1750, 80, 45);
     Car x70Obj = new FuelCar("Proton", "X70", "SUV", "Red", "Automatic", "Petrol", ".\\images\\protonX70.jpg",
             2019, 7, 50, 19, 1650, 60, 20.5);
+    Car peroduaObj = new FuelCar("Perodua", "Myvi", "Subcompact", "Blue", "Automatic", "Petrol", ".\\images\\myvi.jpg",
+            2018, 5, 30, 16, 1300, 40, 20.5);
 
-    Car[] cars = {teslaObj, leafObj, mercObj, x70Obj};
+    Car[] cars = {teslaObj, leafObj, mercObj, x70Obj, kiaObj, peroduaObj};
     int currPage = 0;
 
     @Override
-    public void start(Stage mainStage) throws Exception {
+    public void start(Stage mainStage) throws Exception{
 
         GridPane gridpane1 = new GridPane(); //create gridpane
         gridpane1.setStyle("-fx-background-color: #b2dcf7");
@@ -227,7 +234,7 @@ public class MainStage extends Application {
         HBox hboxBtnNext = new HBox(buttonNext);
         hboxBtnNext.setPadding(new Insets(0 , 0, 0 ,65));
 
-        //Display info on click vbox
+        //Click event handling
 
         vbox1.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
@@ -257,10 +264,17 @@ public class MainStage extends Application {
             }
         });
 
-
         VBox[] vboxes = {vbox1, vbox2, vbox3, vbox4};
         Label[] lbls = {lbl1, lbl2, lbl3, lbl4};
         ImageView[] imgs = {img1, img2, img3, img4};
+
+        buttonNext.setOnMouseClicked((event) ->{    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            if(source == buttonNext) {
+                currPage += 1;
+                loadListingsOnPageChange(cars, gridpane1, vboxes, lbls, imgs);
+            }
+        });
 
         //Add gridpane children
         gridpane1.add(logo, 1, 0);
@@ -304,6 +318,29 @@ public class MainStage extends Application {
         }
     }
 
+    public void loadListingsOnPageChange(Car[] cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs) throws FileNotFoundException{
+        int max, len = cars.length;
+        if((currPage*4 + 4) < len){
+            max = currPage*4 + 4;
+        }else{
+            max = len;
+        }
+
+        for(int i=(currPage*4); i<max; i++){
+            imgs[i].setImage(new Image(new FileInputStream(cars[i].getImgPath())));
+            lbls[i].setText(cars[i].getMake() + " " + cars[i].getModel());
+            if(i==0){
+                gridpane.add(vboxes[i], 0, 1);
+            }else if(i==1){
+                gridpane.add(vboxes[i], 1, 1);
+            }else if(i==2){
+                gridpane.add(vboxes[i], 0, 2);
+            }else{
+                gridpane.add(vboxes[i], 1, 2);
+            }
+        }
+    }
+
     public void displayInfo(TextArea textArea, Car car){
         if (car instanceof FuelCar) {
             String str = "Make - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - " + ((FuelCar) car).getFuel() + "\n" +
@@ -314,10 +351,23 @@ public class MainStage extends Application {
             textArea.setText(str);
         }else{
             String str = "Make - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - Electric" + "\n" +
-                    "Battery capacity (Wh) - " + ((ElectricCar) car).getBatteryCapacity() + "\n" + "Driving range (km) - " + ((ElectricCar) car).getDrivingRange() + "\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n\n" +
+                    "Battery capacity (Wh) - " + ((ElectricCar) car).getBatteryCapacity() + "\n" + "Charge time (hr) - " + ((ElectricCar) car).getChargeTime() +"\n" + "Driving range (km) - " + ((ElectricCar) car).getDrivingRange() + "\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n\n" +
                     "Cost per day - RM" + car.getCostPerDay();
             textArea.setText("Hey");
             textArea.setText(str);
         }
+    }
+
+    public static Car[] getSlice(Car[] array, int startIndex, int endIndex)
+    {
+
+        Car[] slicedArray = new Car[endIndex - startIndex];
+
+        for (int i = 0; i < slicedArray.length; i++)
+        {
+            slicedArray[i] = array[startIndex + i];
+        }
+
+        return slicedArray;
     }
 }
