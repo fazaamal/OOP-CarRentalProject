@@ -24,6 +24,7 @@ public class MainStage extends Application {
             2019, 7, 50, 19, 1650, 60, 20.5);
 
     Car[] cars = {teslaObj, leafObj, mercObj, x70Obj};
+    int currPage = 1;
 
     @Override
     public void start(Stage mainStage) throws Exception {
@@ -272,8 +273,11 @@ public class MainStage extends Application {
 
     public void displayInfo(TextArea textArea, Car car){
         if (car instanceof FuelCar) {
-            String str = car
-            textArea.setText();
+            String str = "Make - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" +
+                    "Transmission - " + ((FuelCar) car).getTransmission() + "\n" + "Fuel tank capacity (L)- " + ((FuelCar) car).getFuelCapacity() + "\n" +
+                    "MPG - " + ((FuelCar) car).getMpg() +"\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n\n" +
+                    "Cost per day - RM" + car.getCostPerDay();
+            textArea.setText(str);
         }
     }
 }
