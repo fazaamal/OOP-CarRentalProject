@@ -10,6 +10,7 @@ public class FuelCar extends Car{
         this.transmission = transmission;
         this.fuelCapacity = fuelCapacity;
         this.mpg = mpg;
+        this.fuel = fuel;
     }
 
     public String getFuel() {

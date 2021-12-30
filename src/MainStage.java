@@ -8,6 +8,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.text.*;
+import org.w3c.dom.Node;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,7 +25,7 @@ public class MainStage extends Application {
             2019, 7, 50, 19, 1650, 60, 20.5);
 
     Car[] cars = {teslaObj, leafObj, mercObj, x70Obj};
-    int currPage = 1;
+    int currPage = 0;
 
     @Override
     public void start(Stage mainStage) throws Exception {
@@ -126,7 +127,7 @@ public class MainStage extends Application {
 
         TextArea carSpecs = new TextArea();
         carSpecs.setPrefWidth(170);
-        carSpecs.setPrefHeight(190);
+        carSpecs.setPrefHeight(210);
         carSpecs.setEditable(false);
         carSpecs.setStyle("-fx-border-color: grey; -fx-border-width: 1px");
 
@@ -214,6 +215,7 @@ public class MainStage extends Application {
         HBox hboxBtnConfirm = new HBox(buttonConfirm);
         hboxBtnConfirm.setPadding(new Insets(0 , 0, 0 ,65));
 
+        //Page buttons
         Button buttonPrev = new Button("Previous page");
         buttonPrev.setAlignment(Pos.CENTER);
         buttonPrev.setDisable(true);
@@ -224,6 +226,37 @@ public class MainStage extends Application {
         buttonNext.setAlignment(Pos.CENTER);
         HBox hboxBtnNext = new HBox(buttonNext);
         hboxBtnNext.setPadding(new Insets(0 , 0, 0 ,65));
+
+        //Display info on click vbox
+
+        vbox1.setOnMouseClicked((event) -> {    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            if(source == vbox1) {
+                displayInfo(carSpecs, cars[currPage+0]);
+            }
+        });
+
+        vbox2.setOnMouseClicked((event) -> {    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            if(source == vbox2) {
+                displayInfo(carSpecs, cars[currPage+1]);
+            }
+        });
+
+        vbox3.setOnMouseClicked((event) -> {    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            if(source == vbox3) {
+                displayInfo(carSpecs, cars[currPage+2]);
+            }
+        });
+
+        vbox4.setOnMouseClicked((event) -> {    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            if(source == vbox4) {
+                displayInfo(carSpecs, cars[currPage+3]);
+            }
+        });
+
 
         VBox[] vboxes = {vbox1, vbox2, vbox3, vbox4};
         Label[] lbls = {lbl1, lbl2, lbl3, lbl4};
@@ -273,10 +306,17 @@ public class MainStage extends Application {
 
     public void displayInfo(TextArea textArea, Car car){
         if (car instanceof FuelCar) {
-            String str = "Make - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" +
+            String str = "Make - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - " + ((FuelCar) car).getFuel() + "\n" +
                     "Transmission - " + ((FuelCar) car).getTransmission() + "\n" + "Fuel tank capacity (L)- " + ((FuelCar) car).getFuelCapacity() + "\n" +
                     "MPG - " + ((FuelCar) car).getMpg() +"\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n\n" +
                     "Cost per day - RM" + car.getCostPerDay();
+            textArea.setText("Hey");
+            textArea.setText(str);
+        }else{
+            String str = "Make - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - Electric" + "\n" +
+                    "Battery capacity (Wh) - " + ((ElectricCar) car).getBatteryCapacity() + "\n" + "Driving range (km) - " + ((ElectricCar) car).getDrivingRange() + "\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n\n" +
+                    "Cost per day - RM" + car.getCostPerDay();
+            textArea.setText("Hey");
             textArea.setText(str);
         }
     }
