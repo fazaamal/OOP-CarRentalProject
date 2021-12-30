@@ -208,10 +208,21 @@ public class MainStage extends Application {
         vbox7.setPadding(new Insets(0, 0, 0 ,0));
         vbox7.getChildren().addAll(lblSpacer, lblColour, checkWhite, checkRed, checkGrey, lblPrice, textPrice, lblType, checkSedan, checkSuv, checkHatchback);
 
-        Button button = new Button("Confirm");
-        button.setAlignment(Pos.CENTER);
-        HBox hboxBtn = new HBox(button);
-        hboxBtn.setPadding(new Insets(0 , 0, 0 ,65));
+        Button buttonConfirm = new Button("Confirm");
+        buttonConfirm.setAlignment(Pos.CENTER);
+        HBox hboxBtnConfirm = new HBox(buttonConfirm);
+        hboxBtnConfirm.setPadding(new Insets(0 , 0, 0 ,65));
+
+        Button buttonPrev = new Button("Previous page");
+        buttonPrev.setAlignment(Pos.CENTER);
+        buttonPrev.setDisable(true);
+        HBox hboxBtnPrev = new HBox(buttonPrev);
+        hboxBtnPrev.setPadding(new Insets(0 , 0, 0 ,65));
+
+        Button buttonNext = new Button("Next page");
+        buttonNext.setAlignment(Pos.CENTER);
+        HBox hboxBtnNext = new HBox(buttonNext);
+        hboxBtnNext.setPadding(new Insets(0 , 0, 0 ,65));
 
         VBox[] vboxes = {vbox1, vbox2, vbox3, vbox4};
         Label[] lbls = {lbl1, lbl2, lbl3, lbl4};
@@ -221,14 +232,16 @@ public class MainStage extends Application {
         gridpane1.add(logo, 1, 0);
         gridpane1.add(vbox5, 2, 1);
         gridpane1.add(gridpane2, 2, 2);
-        gridpane1.add(hboxBtn, 2, 3);
+        gridpane1.add(hboxBtnConfirm, 2, 3);
+        gridpane1.add(hboxBtnPrev, 0, 3);
+        gridpane1.add(hboxBtnNext, 1, 3);
 
         gridpane2.add(vbox6, 0, 0);
         gridpane2.add(vbox7, 1, 0);
 
         loadListings(cars, gridpane1, vboxes, lbls, imgs);
 
-        Scene scene1 = new Scene(gridpane1, 650, 570);
+        Scene scene1 = new Scene(gridpane1, 660, 570);
 
         mainStage.setTitle("IIUM Car Rental"); // Set the stage title
         mainStage.setScene(scene1); // Place the scene in the stage
@@ -254,6 +267,13 @@ public class MainStage extends Application {
             }else{
                 gridpane.add(vboxes[i], 1, 2);
             }
+        }
+    }
+
+    public void displayInfo(TextArea textArea, Car car){
+        if (car instanceof FuelCar) {
+            String str = car
+            textArea.setText();
         }
     }
 }
