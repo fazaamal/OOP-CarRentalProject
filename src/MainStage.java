@@ -272,7 +272,7 @@ public class MainStage extends Application {
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             if(source == buttonNext) {
                 currPage += 1;
-                loadListingsOnPageChange(cars, gridpane1, vboxes, lbls, imgs);
+                loadListingsOnPageChange(gridpane1, vboxes, lbls, imgs);
             }
         });
 
@@ -318,7 +318,7 @@ public class MainStage extends Application {
         }
     }
 
-    public void loadListingsOnPageChange(Car[] cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs) throws FileNotFoundException{
+    public void loadListingsOnPageChange(GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs) throws FileNotFoundException{
         int max, len = cars.length;
         if((currPage*4 + 4) < len){
             max = currPage*4 + 4;
