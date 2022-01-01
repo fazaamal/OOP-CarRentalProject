@@ -72,12 +72,17 @@ public class MainStage extends Application {
         lbl1.setFont(Font.font("Courier", FontWeight.BOLD,
                 18));
 
+        Button button1 = new Button("Rent now!");
+        button1.setAlignment(Pos.CENTER);
+        HBox hboxBtn1 = new HBox(button1);
+        hboxBtn1.setPadding(new Insets(0 , 0, 0 ,65));
+
         VBox vbox1 = new VBox();
         vbox1.setPrefWidth(200);
         vbox1.setPrefHeight(235);
         vbox1.setPadding(new Insets(55, 0, 0 ,0));
         vbox1.setStyle("-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 2px");
-        vbox1.getChildren().addAll(img1, lbl1);
+        vbox1.getChildren().addAll(img1, lbl1, hboxBtn1);
 
         //Top right lsting
         ImageView img2 = new ImageView();
@@ -89,12 +94,17 @@ public class MainStage extends Application {
         lbl2.setFont(Font.font("Courier", FontWeight.BOLD,
                 18));
 
+        Button button2 = new Button("Rent now!");
+        button2.setAlignment(Pos.CENTER);
+        HBox hboxBtn2 = new HBox(button2);
+        hboxBtn2.setPadding(new Insets(0 , 0, 0 ,65));
+
         VBox vbox2 = new VBox();
         vbox2.setPrefWidth(200);
         vbox2.setPrefHeight(235);
         vbox2.setPadding(new Insets(55, 0, 0 ,0));
         vbox2.setStyle("-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 2px");
-        vbox2.getChildren().addAll(img2, lbl2);
+        vbox2.getChildren().addAll(img2, lbl2, hboxBtn2);
 
         //Bottom left listing
         ImageView img3 = new ImageView();
@@ -106,12 +116,17 @@ public class MainStage extends Application {
         lbl3.setFont(Font.font("Courier", FontWeight.BOLD,
                 18));
 
+        Button button3 = new Button("Rent now!");
+        button3.setAlignment(Pos.CENTER);
+        HBox hboxBtn3 = new HBox(button3);
+        hboxBtn3.setPadding(new Insets(0 , 0, 0 ,65));
+
         VBox vbox3 = new VBox();
         vbox3.setPrefWidth(200);
         vbox3.setPrefHeight(235);
         vbox3.setPadding(new Insets(55, 0, 0 ,0));
         vbox3.setStyle("-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 2px");
-        vbox3.getChildren().addAll(img3, lbl3);
+        vbox3.getChildren().addAll(img3, lbl3, hboxBtn3);
 
         //Bottom right listing
         ImageView img4 = new ImageView();
@@ -123,12 +138,17 @@ public class MainStage extends Application {
         lbl4.setFont(Font.font("Courier", FontWeight.BOLD,
                 18));
 
+        Button button4 = new Button("Rent now!");
+        button4.setAlignment(Pos.CENTER);
+        HBox hboxBtn4 = new HBox(button4);
+        hboxBtn4.setPadding(new Insets(0 , 0, 0 ,65));
+
         VBox vbox4 = new VBox();
         vbox4.setPrefWidth(200);
         vbox4.setPrefHeight(235);
         vbox4.setPadding(new Insets(55, 0, 0 ,0));
         vbox4.setStyle("-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 2px");
-        vbox4.getChildren().addAll(img4, lbl4);
+        vbox4.getChildren().addAll(img4, lbl4, hboxBtn4);
 
         //Car specs text area
         Label lblCarSpecs = new Label("Car Information");
@@ -242,28 +262,28 @@ public class MainStage extends Application {
         vbox1.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             if(source == vbox1) {
-                displayInfo(carSpecs, cars[currPage+0]);
+                displayInfo(carSpecs, cars[currPage*4+0]);
             }
         });
 
         vbox2.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             if(source == vbox2) {
-                displayInfo(carSpecs, cars[currPage+1]);
+                displayInfo(carSpecs, cars[currPage*4+1]);
             }
         });
 
         vbox3.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             if(source == vbox3) {
-                displayInfo(carSpecs, cars[currPage+2]);
+                displayInfo(carSpecs, cars[currPage*4+2]);
             }
         });
 
         vbox4.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             if(source == vbox4) {
-                displayInfo(carSpecs, cars[currPage+3]);
+                displayInfo(carSpecs, cars[currPage*4+3]);
             }
         });
 
@@ -393,13 +413,13 @@ public class MainStage extends Application {
         if (car instanceof FuelCar) {
             String str = "Make - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - " + ((FuelCar) car).getFuel() + "\n" +
                     "Transmission - " + ((FuelCar) car).getTransmission() + "\n" + "Fuel tank capacity (L)- " + ((FuelCar) car).getFuelCapacity() + "\n" +
-                    "MPG - " + ((FuelCar) car).getMpg() +"\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n\n" +
+                    "MPG - " + ((FuelCar) car).getMpg() +"\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n" + "Tyre (inch) - " + car.getTyreSize() +"\n\n" +
                     "Cost per day - RM" + car.getCostPerDay();
             textArea.setText("Hey");
             textArea.setText(str);
         }else{
             String str = "Make - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - Electric" + "\n" +
-                    "Battery capacity (Wh) - " + ((ElectricCar) car).getBatteryCapacity() + "\n" + "Charge time (hr) - " + ((ElectricCar) car).getChargeTime() +"\n" + "Driving range (km) - " + ((ElectricCar) car).getDrivingRange() + "\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n\n" +
+                    "Battery capacity (Wh) - " + ((ElectricCar) car).getBatteryCapacity() + "\n" + "Charge time (hr) - " + ((ElectricCar) car).getChargeTime() +"\n" + "Driving range (km) - " + ((ElectricCar) car).getDrivingRange() + "\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n" + "Tyre (inch) - " + car.getTyreSize() + "\n\n" +
                     "Cost per day - RM" + car.getCostPerDay();
             textArea.setText("Hey");
             textArea.setText(str);
@@ -418,4 +438,6 @@ public class MainStage extends Application {
 
         return slicedArray;
     }
+
+
 }
