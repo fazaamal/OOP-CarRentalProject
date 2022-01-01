@@ -14,25 +14,28 @@ import org.w3c.dom.Node;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class MainStage extends Application {
     //Initialising car objects
-    Car teslaObj = new ElectricCar("Tesla", "Model S", "Sedan", "Grey", ".\\images\\teslaS.jpg", 2020,
+    private Car teslaObj = new ElectricCar("Tesla", "Model S", "Sedan", "Grey", ".\\images\\teslaS.jpg", 2020,
             5, 70, 21, 2000, 99000, 8, 400);
-    Car leafObj = new ElectricCar("Nissan", "Leaf", "Hatchback", "Grey", ".\\images\\nissanLeaf.jpg", 2019,
+    private Car leafObj = new ElectricCar("Nissan", "Leaf", "Hatchback", "Grey", ".\\images\\nissanLeaf.jpg", 2019,
             5, 45, 17, 1580, 50000, 6, 200);
-    Car kiaObj = new ElectricCar("Kia", "EV6", "Hatchback", "Red", ".\\images\\kia.jpg", 2021,
+    private Car kiaObj = new ElectricCar("Kia", "EV6", "Hatchback", "Red", ".\\images\\kia.jpg", 2021,
             5, 55, 17, 2500, 82500, 6, 400);
-    Car mercObj = new FuelCar("Mercedes", "E Class", "Sedan", "White", "Manual", "Diesel", ".\\images\\mercE.png",
+    private Car mercObj = new FuelCar("Mercedes", "E Class", "Sedan", "White", "Manual", "Diesel", ".\\images\\mercE.png",
             2021, 5, 80, 18, 1750, 80, 45);
-    Car x70Obj = new FuelCar("Proton", "X70", "SUV", "Red", "Automatic", "Petrol", ".\\images\\protonX70.jpg",
+    private Car x70Obj = new FuelCar("Proton", "X70", "SUV", "Red", "Automatic", "Petrol", ".\\images\\protonX70.jpg",
             2019, 7, 50, 19, 1650, 60, 20.5);
-    Car peroduaObj = new FuelCar("Perodua", "Myvi", "Subcompact", "Blue", "Automatic", "Petrol", ".\\images\\myvi.jpg",
+    private Car peroduaObj = new FuelCar("Perodua", "Myvi", "Subcompact", "Blue", "Automatic", "Petrol", ".\\images\\myvi.jpg",
             2018, 5, 30, 16, 1300, 40, 20.5);
+    private Car fordObj = new FuelCar("Ford", "F150", "4x4 Pickup Truck", "Black", "Manual", "Diesel" , ".\\images\\f150.jpg",
+            2021, 6, 65, 31, 4500, 120, 20);
 
-    Car[] cars = {teslaObj, leafObj, mercObj, x70Obj, kiaObj, peroduaObj};
-    int currPage = 0;
+    private Car[] cars = {teslaObj, leafObj, mercObj, x70Obj, kiaObj, peroduaObj, fordObj};
+    private int currPage = 0;
 
     @Override
     public void start(Stage mainStage) throws Exception{
@@ -270,9 +273,45 @@ public class MainStage extends Application {
 
         buttonNext.setOnMouseClicked((event) ->{    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
-            if(source == buttonNext) {
-                currPage += 1;
-                loadListingsOnPageChange(gridpane1, vboxes, lbls, imgs);
+            try{
+                if(source == buttonNext) {
+                    currPage += 1;
+                    System.out.println(currPage);
+                    if((currPage+1)*4>=cars.length){
+                        buttonNext.setDisable(true);
+                    }else{
+                        buttonNext.setDisable(true);
+                    }
+                    if((currPage*4-4)<0){
+                        buttonPrev.setDisable(true);
+                    }else{
+                        buttonPrev.setDisable(false);
+                    }
+                    loadListingsOnPageChange(gridpane1, vboxes, lbls, imgs);
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        });
+
+        buttonPrev.setOnMouseClicked((event) ->{    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            try{
+                if(source == buttonPrev) {
+                    currPage -= 1;
+                    buttonNext.setDisable(false);
+                    System.out.println(currPage);
+
+                    if((currPage*4-4)<0){
+                        buttonPrev.setDisable(true);
+                    }else{
+                        buttonPrev.setDisable(false);
+                    }
+
+                    loadListingsOnPageChange(gridpane1, vboxes, lbls, imgs);
+                }
+            }catch (IOException e){
+                e.printStackTrace();
             }
         });
 
@@ -303,6 +342,7 @@ public class MainStage extends Application {
             len = 4;
         }
 
+
         for(int i=0; i<len; i++){
             imgs[i].setImage(new Image(new FileInputStream(cars[i].getImgPath())));
             lbls[i].setText(cars[i].getMake() + " " + cars[i].getModel());
@@ -319,6 +359,7 @@ public class MainStage extends Application {
     }
 
     public void loadListingsOnPageChange(GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs) throws FileNotFoundException{
+
         int max, len = cars.length;
         if((currPage*4 + 4) < len){
             max = currPage*4 + 4;
@@ -326,19 +367,26 @@ public class MainStage extends Application {
             max = len;
         }
 
-        for(int i=(currPage*4); i<max; i++){
-            imgs[i].setImage(new Image(new FileInputStream(cars[i].getImgPath())));
-            lbls[i].setText(cars[i].getMake() + " " + cars[i].getModel());
-            if(i==0){
-                gridpane.add(vboxes[i], 0, 1);
-            }else if(i==1){
-                gridpane.add(vboxes[i], 1, 1);
-            }else if(i==2){
-                gridpane.add(vboxes[i], 0, 2);
-            }else{
-                gridpane.add(vboxes[i], 1, 2);
+        for(int i=0; i<4; i++){
+            gridpane.getChildren().remove(vboxes[i]);
+        }
+
+        for(int i=(currPage*4); i<(max); i++){
+            imgs[i-currPage*4].setImage(new Image(new FileInputStream(cars[i].getImgPath())));
+            lbls[i-currPage*4].setText(cars[i].getMake() + " " + cars[i].getModel());
+
+
+            if(i-currPage*4==0){
+                gridpane.add(vboxes[i-currPage*4], 0, 1);
+            }else if(i-currPage*4==1){
+                gridpane.add(vboxes[i-currPage*4], 1, 1);
+            }else if(i-currPage*4==2){
+                gridpane.add(vboxes[i-currPage*4], 0, 2);
+            }else if(i-currPage*4==3){
+                gridpane.add(vboxes[i-currPage*4], 1, 2);
             }
         }
+
     }
 
     public void displayInfo(TextArea textArea, Car car){
