@@ -1,13 +1,14 @@
 public class Car {
-    private String make, model, type, colour, imgPath;
+    private String make, model, type, colour, imgPath, fuel;
     private int year, seats;
     private double costPerDay, tyreSize, weight;
 
-    public Car(String make, String model, String type, String colour, String imgPath, int year, int seats, double costPerDay, double tyreSize, double weight) {
+    public Car(String make, String model, String type, String colour, String fuel, String imgPath, int year, int seats, double costPerDay, double tyreSize, double weight) {
         this.make = make;
         this.model = model;
         this.type = type;
         this.colour = colour;
+        this.fuel = fuel;
         this.imgPath = imgPath;
         this.year = year;
         this.seats = seats;
@@ -34,6 +35,10 @@ public class Car {
 
     public String getColour() {
         return colour;
+    }
+
+    public String getFuel() {
+        return fuel;
     }
 
     public int getYear() {
@@ -74,6 +79,10 @@ public class Car {
 
     public void setColour(String colour) {
         this.colour = colour;
+    }
+
+    public void setFuel(String fuel) {
+        this.fuel = fuel;
     }
 
     public void setYear(int year) {

@@ -16,26 +16,31 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public class MainStage extends Application {
     //Initialising car objects
-    private Car teslaObj = new ElectricCar("Tesla", "Model S", "Sedan", "Grey", ".\\images\\teslaS.jpg", 2020,
+    private Car teslaObj = new ElectricCar("Tesla", "Model S", "Sedan", "Grey", "Electric", ".\\images\\teslaS.jpg", 2020,
             5, 70, 21, 2000, 99000, 8, 400);
-    private Car leafObj = new ElectricCar("Nissan", "Leaf", "Hatchback", "Grey", ".\\images\\nissanLeaf.jpg", 2019,
+    private Car leafObj = new ElectricCar("Nissan", "Leaf", "Hatchback", "Grey", "Electric", ".\\images\\nissanLeaf.jpg", 2019,
             5, 45, 17, 1580, 50000, 6, 200);
-    private Car kiaObj = new ElectricCar("Kia", "EV6", "Hatchback", "Red", ".\\images\\kia.jpg", 2021,
+    private Car kiaObj = new ElectricCar("Kia", "EV6", "Hatchback", "Red", "Electric", ".\\images\\kia.jpg", 2021,
             5, 55, 17, 2500, 82500, 6, 400);
     private Car mercObj = new FuelCar("Mercedes", "E Class", "Sedan", "White", "Manual", "Diesel", ".\\images\\mercE.png",
             2021, 5, 80, 18, 1750, 80, 45);
     private Car x70Obj = new FuelCar("Proton", "X70", "SUV", "Red", "Automatic", "Petrol", ".\\images\\protonX70.jpg",
             2019, 7, 50, 19, 1650, 60, 20.5);
-    private Car peroduaObj = new FuelCar("Perodua", "Myvi", "Subcompact", "Blue", "Automatic", "Petrol", ".\\images\\myvi.jpg",
+    private Car peroduaObj = new FuelCar("Perodua", "Myvi", "Hatchback", "Blue", "Automatic", "Petrol", ".\\images\\myvi.jpg",
             2018, 5, 30, 16, 1300, 40, 20.5);
-    private Car fordObj = new FuelCar("Ford", "F150", "4x4 Pickup Truck", "Black", "Manual", "Diesel" , ".\\images\\f150.jpg",
+    private Car fordObj = new FuelCar("Ford", "F150", "Truck", "Black", "Manual", "Diesel" , ".\\images\\f150.jpg",
             2021, 6, 65, 31, 4500, 120, 20);
 
     private Car[] cars = {teslaObj, leafObj, mercObj, x70Obj, kiaObj, peroduaObj, fordObj};
     private int currPage = 0;
+    private boolean filtered = false;
+
+    private ArrayList<Car> carFilteredList = new ArrayList<Car>();
+    private ArrayList<String> filters = new ArrayList<String>();
 
     @Override
     public void start(Stage mainStage) throws Exception{
@@ -47,9 +52,9 @@ public class MainStage extends Application {
         gridpane1.getColumnConstraints().add(new ColumnConstraints(200)); //col 1
         gridpane1.getColumnConstraints().add(new ColumnConstraints(200)); //col 2
         gridpane1.getRowConstraints().add(new RowConstraints(30)); //row 0
-        gridpane1.getRowConstraints().add(new RowConstraints(235)); //row 1
-        gridpane1.getRowConstraints().add(new RowConstraints(235)); //row 2
-        gridpane1.getRowConstraints().add(new RowConstraints(20)); //row 0
+        gridpane1.getRowConstraints().add(new RowConstraints(260)); //row 1
+        gridpane1.getRowConstraints().add(new RowConstraints(260)); //row 2
+        gridpane1.getRowConstraints().add(new RowConstraints(40)); //row 3
         gridpane1.setHgap(15);
         gridpane1.setVgap(10);
 
@@ -179,7 +184,11 @@ public class MainStage extends Application {
         CheckBox checkElectric = new CheckBox("Electric");
         CheckBox checkPetrol = new CheckBox("Petrol");
         CheckBox checkDiesel = new CheckBox("Diesel");
+
         CheckBox[] checkFuels = {checkDiesel, checkPetrol, checkElectric};
+        for(CheckBox checkBox: checkFuels){
+            checkBox.setSelected(true);
+        }
 
         Label lblMake = new Label("Make:");
         lblMake.setFont(Font.font("Courier", FontWeight.BOLD,
@@ -188,21 +197,32 @@ public class MainStage extends Application {
         CheckBox checkProton = new CheckBox("Proton");
         CheckBox checkNissan = new CheckBox("Nissan");
         CheckBox checkMercedes = new CheckBox("Mercedes");
-        CheckBox[] checkMakes = {checkMercedes, checkNissan, checkTesla, checkProton};
+        CheckBox checkPerodua = new CheckBox("Perodua");
+        CheckBox checkKia = new CheckBox("Kia");
+        CheckBox checkFord = new CheckBox("Ford");
+
+        CheckBox[] checkMakes = {checkMercedes, checkNissan, checkTesla, checkProton, checkPerodua, checkKia, checkFord};
+        for(CheckBox checkBox: checkMakes){
+            checkBox.setSelected(true);
+        }
 
         Label lblTransmission = new Label("Transmission:");
         lblTransmission.setFont(Font.font("Courier", FontWeight.BOLD,
                 10));
         CheckBox checkAutomatic = new CheckBox("Automatic");
         CheckBox checkManual = new CheckBox("Manual");
+
         CheckBox[] checkTransmissions = {checkAutomatic, checkManual};
+        for(CheckBox checkBox: checkTransmissions){
+            checkBox.setSelected(true);
+        }
 
         VBox vbox6 = new VBox();
         vbox6.setSpacing(1);
         vbox6.setPrefWidth(200);
         vbox6.setPrefHeight(235);
         vbox6.setPadding(new Insets(0, 0, 0 ,0));
-        vbox6.getChildren().addAll(lblCostInfo, lblCarFuel, checkElectric, checkPetrol, checkDiesel, lblMake, checkMercedes, checkNissan, checkTesla, checkProton,
+        vbox6.getChildren().addAll(lblCostInfo, lblCarFuel, checkElectric, checkPetrol, checkDiesel, lblMake, checkMercedes, checkNissan, checkTesla, checkProton, checkPerodua, checkKia, checkFord,
                 lblTransmission, checkAutomatic, checkManual);
 
         // Filter right side
@@ -217,6 +237,13 @@ public class MainStage extends Application {
         CheckBox checkWhite = new CheckBox("White");
         CheckBox checkRed = new CheckBox("Red");
         CheckBox checkGrey = new CheckBox("Grey");
+        CheckBox checkBlack = new CheckBox("Black");
+        CheckBox checkBlue = new CheckBox("Blue");
+
+        CheckBox[] checkColours = {checkWhite, checkRed, checkGrey, checkBlack, checkBlue};
+        for(CheckBox checkBox: checkColours){
+            checkBox.setSelected(true);
+        }
 
         Label lblPrice = new Label("Max. price (RM):");
         lblPrice.setFont(Font.font("Courier", FontWeight.BOLD,
@@ -231,31 +258,36 @@ public class MainStage extends Application {
         CheckBox checkSedan = new CheckBox("Sedan");
         CheckBox checkSuv = new CheckBox("SUV");
         CheckBox checkHatchback = new CheckBox("Hatchback");
-        CheckBox[] checkTypes = {checkSedan, checkSuv, checkHatchback};
+        CheckBox checkTruck = new CheckBox("Truck");
+
+        CheckBox[] checkTypes = {checkSedan, checkSuv, checkHatchback, checkTruck};
+        for(CheckBox checkBox: checkTypes){
+            checkBox.setSelected(true);
+        }
 
         VBox vbox7 = new VBox();
         vbox7.setSpacing(1);
         vbox7.setPrefWidth(200);
         vbox7.setPrefHeight(235);
         vbox7.setPadding(new Insets(0, 0, 0 ,0));
-        vbox7.getChildren().addAll(lblSpacer, lblColour, checkWhite, checkRed, checkGrey, lblPrice, textPrice, lblType, checkSedan, checkSuv, checkHatchback);
+        vbox7.getChildren().addAll(lblSpacer, lblColour, checkWhite, checkRed, checkGrey, checkBlack, checkBlue, lblPrice, textPrice, lblType, checkSedan, checkSuv, checkHatchback, checkTruck);
 
         Button buttonConfirm = new Button("Confirm");
         buttonConfirm.setAlignment(Pos.CENTER);
         HBox hboxBtnConfirm = new HBox(buttonConfirm);
-        hboxBtnConfirm.setPadding(new Insets(0 , 0, 0 ,65));
+        hboxBtnConfirm.setPadding(new Insets(10 , 0, 0 ,65));
 
         //Page buttons
         Button buttonPrev = new Button("Previous page");
         buttonPrev.setAlignment(Pos.CENTER);
         buttonPrev.setDisable(true);
         HBox hboxBtnPrev = new HBox(buttonPrev);
-        hboxBtnPrev.setPadding(new Insets(0 , 0, 0 ,65));
+        hboxBtnPrev.setPadding(new Insets(10 , 0, 0 ,65));
 
         Button buttonNext = new Button("Next page");
         buttonNext.setAlignment(Pos.CENTER);
         HBox hboxBtnNext = new HBox(buttonNext);
-        hboxBtnNext.setPadding(new Insets(0 , 0, 0 ,65));
+        hboxBtnNext.setPadding(new Insets(10 , 0, 0 ,65));
 
         //Click event handling
 
@@ -296,18 +328,30 @@ public class MainStage extends Application {
             try{
                 if(source == buttonNext) {
                     currPage += 1;
-                    System.out.println(currPage);
-                    if((currPage+1)*4>=cars.length){
-                        buttonNext.setDisable(true);
-                    }else{
-                        buttonNext.setDisable(true);
-                    }
+
                     if((currPage*4-4)<0){
                         buttonPrev.setDisable(true);
                     }else{
                         buttonPrev.setDisable(false);
                     }
-                    loadListingsOnPageChange(gridpane1, vboxes, lbls, imgs);
+
+                    if(filtered){
+                        if((currPage+1)*4>=carFilteredList.size()){
+                            buttonNext.setDisable(true);
+                        }else{
+                            buttonNext.setDisable(true);
+                        }
+
+                        loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, currPage);
+                    }else{
+                        if((currPage+1)*4>=cars.length){
+                            buttonNext.setDisable(true);
+                        }else{
+                            buttonNext.setDisable(true);
+                        }
+
+                        loadListings(cars, gridpane1, vboxes, lbls, imgs, currPage);
+                    }
                 }
             }catch (IOException e){
                 e.printStackTrace();
@@ -320,7 +364,6 @@ public class MainStage extends Application {
                 if(source == buttonPrev) {
                     currPage -= 1;
                     buttonNext.setDisable(false);
-                    System.out.println(currPage);
 
                     if((currPage*4-4)<0){
                         buttonPrev.setDisable(true);
@@ -328,7 +371,109 @@ public class MainStage extends Application {
                         buttonPrev.setDisable(false);
                     }
 
-                    loadListingsOnPageChange(gridpane1, vboxes, lbls, imgs);
+                    if(filtered){
+                        loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, currPage);
+                    }else{
+                        loadListings(cars, gridpane1, vboxes, lbls, imgs, currPage);
+                    }
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        });
+
+        buttonConfirm.setOnMouseClicked((event) ->{    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            try{
+                if(source == buttonConfirm) {
+                    carFilteredList.removeAll(carFilteredList);
+
+                    for(CheckBox check: checkFuels){
+                        if(check.isSelected()){
+                            filters.add(check.getText());
+                        }else{
+                            filters.add(null);
+                        }
+                    }
+
+                    for(CheckBox check: checkMakes){
+                        if(check.isSelected()){
+                            filters.add(check.getText());
+                        }else{
+                            filters.add(null);
+                        }
+                    }
+
+                    for(CheckBox check: checkColours){
+                        if(check.isSelected()){
+                            filters.add(check.getText());
+                        }else{
+                            filters.add(null);
+                        }
+                    }
+
+                    for(CheckBox check: checkTransmissions){
+                        if(check.isSelected()){
+                            filters.add(check.getText());
+                        }else{
+                            filters.add(null);
+                        }
+                    }
+
+
+                    for(CheckBox check: checkTypes){
+                        if(check.isSelected()){
+                            filters.add(check.getText());
+                        }else{
+                            filters.add(null);
+                        }
+                    }
+
+                    if(textPrice.getText() == ""){
+                        filters.add("99999999");
+                    }else{
+                        filters.add(textPrice.getText());
+                    }
+
+                    System.out.println(filters);
+
+                    for(Car car: cars){
+//                        System.out.println(car.getMake());
+                        if(car instanceof FuelCar){
+                            System.out.println(car.getMake());
+
+                            if(filters.contains(car.getFuel()) && filters.contains(car.getMake()) && filters.contains(((FuelCar) car).getTransmission()) &&
+                                    filters.contains(car.getColour()) && filters.contains(car.getType()) && (Double.parseDouble(filters.get(filters.size()-1)) >= car.getCostPerDay())){
+                                System.out.println(car.getMake());
+                                carFilteredList.add(car);
+                            }
+                        }else{
+                            if(filters.contains(car.getFuel()) && filters.contains(car.getMake()) && filters.contains(car.getColour()) && filters.contains(car.getType()) &&
+                                    (Double.parseDouble(filters.get(filters.size()-1)) >= car.getCostPerDay())){
+//                                System.out.println(car.getMake());
+                                carFilteredList.add(car);
+                            }
+                        }
+                    }
+
+                    filtered = true;
+                    currPage = 0;
+                    System.out.println(carFilteredList.size());
+                    System.out.println((currPage+1)*4);
+                    if((currPage+1)*4>=carFilteredList.size()){
+                        buttonNext.setDisable(true);
+                    }else{
+                        buttonNext.setDisable(false);
+                    }
+
+//                    if((currPage*4-4)<0){
+//                        buttonPrev.setDisable(true);
+//                    }else{
+//                        buttonPrev.setDisable(false);
+//                    }
+
+                    loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, currPage);
+
                 }
             }catch (IOException e){
                 e.printStackTrace();
@@ -348,7 +493,7 @@ public class MainStage extends Application {
 
         loadListings(cars, gridpane1, vboxes, lbls, imgs);
 
-        Scene scene1 = new Scene(gridpane1, 660, 570);
+        Scene scene1 = new Scene(gridpane1, 660, 630);
 
         mainStage.setTitle("IIUM Car Rental"); // Set the stage title
         mainStage.setScene(scene1); // Place the scene in the stage
@@ -378,7 +523,7 @@ public class MainStage extends Application {
         }
     }
 
-    public void loadListingsOnPageChange(GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs) throws FileNotFoundException{
+    public void loadListings(Car[] cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs, int currPage) throws FileNotFoundException{
 
         int max, len = cars.length;
         if((currPage*4 + 4) < len){
@@ -395,6 +540,34 @@ public class MainStage extends Application {
             imgs[i-currPage*4].setImage(new Image(new FileInputStream(cars[i].getImgPath())));
             lbls[i-currPage*4].setText(cars[i].getMake() + " " + cars[i].getModel());
 
+            if(i-currPage*4==0){
+                gridpane.add(vboxes[i-currPage*4], 0, 1);
+            }else if(i-currPage*4==1){
+                gridpane.add(vboxes[i-currPage*4], 1, 1);
+            }else if(i-currPage*4==2){
+                gridpane.add(vboxes[i-currPage*4], 0, 2);
+            }else if(i-currPage*4==3){
+                gridpane.add(vboxes[i-currPage*4], 1, 2);
+            }
+        }
+
+    }
+
+    public void loadListings(ArrayList<Car> cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs, int currPage) throws FileNotFoundException{
+        int max, len = cars.size();
+        if((currPage*4 + 4) < len){
+            max = currPage*4 + 4;
+        }else{
+            max = len;
+        }
+
+        for(int i=0; i<4; i++){
+            gridpane.getChildren().remove(vboxes[i]);
+        }
+
+        for(int i=(currPage*4); i<(max); i++){
+            imgs[i-currPage*4].setImage(new Image(new FileInputStream(cars.get(i).getImgPath())));
+            lbls[i-currPage*4].setText(cars.get(i).getMake() + " " + cars.get(i).getModel());
 
             if(i-currPage*4==0){
                 gridpane.add(vboxes[i-currPage*4], 0, 1);

@@ -4,17 +4,13 @@ public class FuelCar extends Car{
 
     FuelCar(String make, String model, String type, String colour, String transmission, String fuel, String imgPath, int year, int seats, double costPerDay,
                 double tyreSize, double weight, double fuelCapacity, double mpg){
-        super(make, model, type, colour, imgPath, year, seats, costPerDay,
+        super(make, model, type, colour, fuel, imgPath, year, seats, costPerDay,
                 tyreSize, weight);
 
         this.transmission = transmission;
         this.fuelCapacity = fuelCapacity;
         this.mpg = mpg;
-        this.fuel = fuel;
-    }
 
-    public String getFuel() {
-        return fuel;
     }
 
     public String getTransmission() {
