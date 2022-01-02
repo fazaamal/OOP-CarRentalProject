@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class MainStage extends Application {
     //Initialising car objects
-    private Car teslaObj = new ElectricCar("Tesla", "Model S", "Sedan", "Grey", "Electric", ".\\images\\teslaS.jpg", 2020,
+    private Car teslaSObj = new ElectricCar("Tesla", "Model S", "Sedan", "Grey", "Electric", ".\\images\\teslaS.jpg", 2020,
             5, 70, 21, 2000, 99000, 8, 400);
     private Car leafObj = new ElectricCar("Nissan", "Leaf", "Hatchback", "Grey", "Electric", ".\\images\\nissanLeaf.jpg", 2019,
             5, 45, 17, 1580, 50000, 6, 200);
@@ -34,8 +34,12 @@ public class MainStage extends Application {
             2018, 5, 30, 16, 1300, 40, 20.5);
     private Car fordObj = new FuelCar("Ford", "F150", "Truck", "Black", "Manual", "Diesel" , ".\\images\\f150.jpg",
             2021, 6, 65, 31, 4500, 120, 20);
+    private Car vauxhallObj = new FuelCar("Vauxhall", "Corsa", "Hatchback", "Red", "Automatic", "Petrol", ".\\images\\corsa.png",
+            2019, 5, 38, 16, 1100, 45, 22);
+    private Car teslaXObj = new ElectricCar("Tesla", "Model X", "SUV", "Blue", "Electric", ".\\images\\teslaX.png", 2018,
+            7, 90, 21, 2500, 120000, 8, 380);
 
-    private Car[] cars = {teslaObj, leafObj, mercObj, x70Obj, kiaObj, peroduaObj, fordObj};
+    private Car[] cars = {teslaSObj, leafObj, mercObj, x70Obj, kiaObj, peroduaObj, fordObj, vauxhallObj, teslaXObj};
     private int currPage = 0;
     private boolean filtered = false;
 
@@ -272,10 +276,14 @@ public class MainStage extends Application {
         vbox7.setPadding(new Insets(0, 0, 0 ,0));
         vbox7.getChildren().addAll(lblSpacer, lblColour, checkWhite, checkRed, checkGrey, checkBlack, checkBlue, lblPrice, textPrice, lblType, checkSedan, checkSuv, checkHatchback, checkTruck);
 
-        Button buttonConfirm = new Button("Confirm");
-        buttonConfirm.setAlignment(Pos.CENTER);
-        HBox hboxBtnConfirm = new HBox(buttonConfirm);
-        hboxBtnConfirm.setPadding(new Insets(10 , 0, 0 ,65));
+        Button buttonApply = new Button("Apply");
+        buttonApply.setAlignment(Pos.CENTER);
+        Button buttonReset = new Button("Reset");
+        buttonReset.setAlignment(Pos.CENTER);
+
+        HBox hboxFilterBtns = new HBox(buttonApply, buttonReset);
+        hboxFilterBtns.setSpacing(40);
+        hboxFilterBtns.setPadding(new Insets(10 , 0, 0 ,35));
 
         //Page buttons
         Button buttonPrev = new Button("Previous page");
@@ -294,28 +302,44 @@ public class MainStage extends Application {
         vbox1.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             if(source == vbox1) {
-                displayInfo(carSpecs, cars[currPage*4+0]);
+                if(filtered){
+                    displayInfo(carSpecs, carFilteredList.get(currPage*4+0));
+                }else{
+                    displayInfo(carSpecs, cars[currPage*4+0]);
+                }
             }
         });
 
         vbox2.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             if(source == vbox2) {
-                displayInfo(carSpecs, cars[currPage*4+1]);
+                if(filtered){
+                    displayInfo(carSpecs, carFilteredList.get(currPage*4+1));
+                }else {
+                    displayInfo(carSpecs, cars[currPage * 4 + 1]);
+                }
             }
         });
 
         vbox3.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             if(source == vbox3) {
-                displayInfo(carSpecs, cars[currPage*4+2]);
+                if(filtered){
+                    displayInfo(carSpecs, carFilteredList.get(currPage*4+2));
+                }else {
+                    displayInfo(carSpecs, cars[currPage * 4 + 2]);
+                }
             }
         });
 
         vbox4.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             if(source == vbox4) {
-                displayInfo(carSpecs, cars[currPage*4+3]);
+                if(filtered){
+                    displayInfo(carSpecs, carFilteredList.get(currPage*4+3));
+                }else {
+                    displayInfo(carSpecs, cars[currPage * 4 + 3]);
+                }
             }
         });
 
@@ -339,7 +363,7 @@ public class MainStage extends Application {
                         if((currPage+1)*4>=carFilteredList.size()){
                             buttonNext.setDisable(true);
                         }else{
-                            buttonNext.setDisable(true);
+                            buttonNext.setDisable(false);
                         }
 
                         loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, currPage);
@@ -347,7 +371,7 @@ public class MainStage extends Application {
                         if((currPage+1)*4>=cars.length){
                             buttonNext.setDisable(true);
                         }else{
-                            buttonNext.setDisable(true);
+                            buttonNext.setDisable(false);
                         }
 
                         loadListings(cars, gridpane1, vboxes, lbls, imgs, currPage);
@@ -382,11 +406,12 @@ public class MainStage extends Application {
             }
         });
 
-        buttonConfirm.setOnMouseClicked((event) ->{    // lambda expression
+        buttonApply.setOnMouseClicked((event) ->{    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             try{
-                if(source == buttonConfirm) {
-                    carFilteredList.removeAll(carFilteredList);
+                if(source == buttonApply) {
+                    filters.clear();
+                    carFilteredList.clear();
 
                     for(CheckBox check: checkFuels){
                         if(check.isSelected()){
@@ -460,11 +485,15 @@ public class MainStage extends Application {
                     currPage = 0;
                     System.out.println(carFilteredList.size());
                     System.out.println((currPage+1)*4);
+
+
                     if((currPage+1)*4>=carFilteredList.size()){
                         buttonNext.setDisable(true);
                     }else{
                         buttonNext.setDisable(false);
                     }
+
+                    buttonPrev.setDisable(true);
 
 //                    if((currPage*4-4)<0){
 //                        buttonPrev.setDisable(true);
@@ -480,11 +509,49 @@ public class MainStage extends Application {
             }
         });
 
+        buttonReset.setOnMouseClicked((event) ->{    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            try{
+                if(source == buttonReset) {
+                    currPage = 0;
+                    filtered = false;
+
+                    for(CheckBox check: checkFuels){
+                        check.setSelected(true);
+                    }
+
+                    for(CheckBox check: checkMakes){
+                        check.setSelected(true);
+                    }
+
+                    for(CheckBox check: checkColours){
+                        check.setSelected(true);
+                    }
+
+                    for(CheckBox check: checkTypes){
+                        check.setSelected(true);
+                    }
+
+                    textPrice.setText("");
+
+                    if((currPage+1)*4>=cars.length){
+                        buttonNext.setDisable(true);
+                    }else{
+                        buttonNext.setDisable(false);
+                    }
+
+                    loadListings(cars, gridpane1, vboxes, lbls, imgs);
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        });
+
         //Add gridpane children
         gridpane1.add(logo, 1, 0);
         gridpane1.add(vbox5, 2, 1);
         gridpane1.add(gridpane2, 2, 2);
-        gridpane1.add(hboxBtnConfirm, 2, 3);
+        gridpane1.add(hboxFilterBtns, 2, 3);
         gridpane1.add(hboxBtnPrev, 0, 3);
         gridpane1.add(hboxBtnNext, 1, 3);
 
@@ -507,6 +574,9 @@ public class MainStage extends Application {
             len = 4;
         }
 
+        for(int i=0; i<4; i++){
+            gridpane.getChildren().remove(vboxes[i]);
+        }
 
         for(int i=0; i<len; i++){
             imgs[i].setImage(new Image(new FileInputStream(cars[i].getImgPath())));
