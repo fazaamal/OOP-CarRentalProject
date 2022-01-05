@@ -1,9 +1,11 @@
 public class Car {
-    private String make, model, type, colour, imgPath, fuel;
+    private String carId, make, model, type, colour, imgPath, fuel;
     private int year, seats;
     private double costPerDay, tyreSize, weight;
+    private boolean available = true;
 
-    public Car(String make, String model, String type, String colour, String fuel, String imgPath, int year, int seats, double costPerDay, double tyreSize, double weight) {
+    public Car(String carId, String make, String model, String type, String colour, String fuel, String imgPath, int year, int seats, double costPerDay, double tyreSize, double weight) {
+        this.carId = carId;
         this.make = make;
         this.model = model;
         this.type = type;
@@ -15,6 +17,10 @@ public class Car {
         this.costPerDay = costPerDay;
         this.tyreSize = tyreSize;
         this.weight = weight;
+    }
+
+    public String getCarId() {
+        return carId;
     }
 
     public String getImgPath() {
@@ -61,6 +67,14 @@ public class Car {
         return weight;
     }
 
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setCarId(String carId) {
+        this.carId = carId;
+    }
+
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
     }
@@ -103,5 +117,9 @@ public class Car {
 
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

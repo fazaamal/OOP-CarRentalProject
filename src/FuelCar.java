@@ -2,9 +2,9 @@ public class FuelCar extends Car{
     private String transmission, fuel;
     private double fuelCapacity, mpg;
 
-    FuelCar(String make, String model, String type, String colour, String transmission, String fuel, String imgPath, int year, int seats, double costPerDay,
+    FuelCar(String carId, String make, String model, String type, String colour, String transmission, String fuel, String imgPath, int year, int seats, double costPerDay,
                 double tyreSize, double weight, double fuelCapacity, double mpg){
-        super(make, model, type, colour, fuel, imgPath, year, seats, costPerDay,
+        super(carId, make, model, type, colour, fuel, imgPath, year, seats, costPerDay,
                 tyreSize, weight);
 
         this.transmission = transmission;

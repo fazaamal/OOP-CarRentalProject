@@ -17,29 +17,30 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MainStage extends Application {
     //Initialising car objects
-    private Car teslaSObj = new ElectricCar("Tesla", "Model S", "Sedan", "Grey", "Electric", ".\\images\\teslaS.jpg", 2020,
+    private Car teslaSObj = new ElectricCar("C1", "Tesla", "Model S", "Sedan", "Grey", "Electric", ".\\images\\teslaS.jpg", 2020,
             5, 70, 21, 2000, 99000, 8, 400);
-    private Car leafObj = new ElectricCar("Nissan", "Leaf", "Hatchback", "Grey", "Electric", ".\\images\\nissanLeaf.jpg", 2019,
+    private Car leafObj = new ElectricCar("C2", "Nissan", "Leaf", "Hatchback", "Grey", "Electric", ".\\images\\nissanLeaf.jpg", 2019,
             5, 45, 17, 1580, 50000, 6, 200);
-    private Car kiaObj = new ElectricCar("Kia", "EV6", "Hatchback", "Red", "Electric", ".\\images\\kia.jpg", 2021,
+    private Car kiaObj = new ElectricCar("C3", "Kia", "EV6", "Hatchback", "Red", "Electric", ".\\images\\kia.jpg", 2021,
             5, 55, 17, 2500, 82500, 6, 400);
-    private Car mercObj = new FuelCar("Mercedes", "E Class", "Sedan", "White", "Manual", "Diesel", ".\\images\\mercE.png",
+    private Car mercObj = new FuelCar("C4", "Mercedes", "E Class", "Sedan", "White", "Manual", "Diesel", ".\\images\\mercE.png",
             2021, 5, 80, 18, 1750, 80, 45);
-    private Car x70Obj = new FuelCar("Proton", "X70", "SUV", "Red", "Automatic", "Petrol", ".\\images\\protonX70.jpg",
+    private Car x70Obj = new FuelCar("C5", "Proton", "X70", "SUV", "Red", "Automatic", "Petrol", ".\\images\\protonX70.jpg",
             2019, 7, 50, 19, 1650, 60, 20.5);
-    private Car peroduaObj = new FuelCar("Perodua", "Myvi", "Hatchback", "Blue", "Automatic", "Petrol", ".\\images\\myvi.jpg",
+    private Car peroduaObj = new FuelCar("C6", "Perodua", "Myvi", "Hatchback", "Blue", "Automatic", "Petrol", ".\\images\\myvi.jpg",
             2018, 5, 30, 16, 1300, 40, 20.5);
-    private Car fordObj = new FuelCar("Ford", "F150", "Truck", "Black", "Manual", "Diesel" , ".\\images\\f150.jpg",
+    private Car fordObj = new FuelCar("C7", "Ford", "F150", "Truck", "Black", "Manual", "Diesel" , ".\\images\\f150.jpg",
             2021, 6, 65, 31, 4500, 120, 20);
-    private Car vauxhallObj = new FuelCar("Vauxhall", "Corsa", "Hatchback", "Red", "Automatic", "Petrol", ".\\images\\corsa.png",
+    private Car corsaObj = new FuelCar("C8", "Ford", "Corsa", "Hatchback", "Red", "Automatic", "Petrol", ".\\images\\corsa.png",
             2019, 5, 38, 16, 1100, 45, 22);
-    private Car teslaXObj = new ElectricCar("Tesla", "Model X", "SUV", "Blue", "Electric", ".\\images\\teslaX.png", 2018,
+    private Car teslaXObj = new ElectricCar("C9", "Tesla", "Model X", "SUV", "Blue", "Electric", ".\\images\\teslaX.png", 2018,
             7, 90, 21, 2500, 120000, 8, 380);
 
-    private Car[] cars = {teslaSObj, leafObj, mercObj, x70Obj, kiaObj, peroduaObj, fordObj, vauxhallObj, teslaXObj};
+    private Car[] cars = {teslaSObj, leafObj, mercObj, x70Obj, kiaObj, peroduaObj, fordObj, corsaObj, teslaXObj};
     private int currPage = 0;
     private boolean filtered = false;
 
@@ -48,6 +49,10 @@ public class MainStage extends Application {
 
     @Override
     public void start(Stage mainStage) throws Exception{
+
+        /*
+        DESIGN OF PRIMARY STAGE
+         */
 
         GridPane gridpane1 = new GridPane(); //create gridpane
         gridpane1.setStyle("-fx-background-color: #b2dcf7");
@@ -347,6 +352,7 @@ public class MainStage extends Application {
         Label[] lbls = {lbl1, lbl2, lbl3, lbl4};
         ImageView[] imgs = {img1, img2, img3, img4};
 
+        //Go to next page
         buttonNext.setOnMouseClicked((event) ->{    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             try{
@@ -382,6 +388,7 @@ public class MainStage extends Application {
             }
         });
 
+        //Go to previous page
         buttonPrev.setOnMouseClicked((event) ->{    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             try{
@@ -406,6 +413,7 @@ public class MainStage extends Application {
             }
         });
 
+        //Apply filters
         buttonApply.setOnMouseClicked((event) ->{    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             try{
@@ -460,22 +468,17 @@ public class MainStage extends Application {
                         filters.add(textPrice.getText());
                     }
 
-                    System.out.println(filters);
 
                     for(Car car: cars){
-//                        System.out.println(car.getMake());
-                        if(car instanceof FuelCar){
-                            System.out.println(car.getMake());
 
+                        if(car instanceof FuelCar){
                             if(filters.contains(car.getFuel()) && filters.contains(car.getMake()) && filters.contains(((FuelCar) car).getTransmission()) &&
                                     filters.contains(car.getColour()) && filters.contains(car.getType()) && (Double.parseDouble(filters.get(filters.size()-1)) >= car.getCostPerDay())){
-                                System.out.println(car.getMake());
                                 carFilteredList.add(car);
                             }
                         }else{
                             if(filters.contains(car.getFuel()) && filters.contains(car.getMake()) && filters.contains(car.getColour()) && filters.contains(car.getType()) &&
                                     (Double.parseDouble(filters.get(filters.size()-1)) >= car.getCostPerDay())){
-//                                System.out.println(car.getMake());
                                 carFilteredList.add(car);
                             }
                         }
@@ -483,9 +486,6 @@ public class MainStage extends Application {
 
                     filtered = true;
                     currPage = 0;
-                    System.out.println(carFilteredList.size());
-                    System.out.println((currPage+1)*4);
-
 
                     if((currPage+1)*4>=carFilteredList.size()){
                         buttonNext.setDisable(true);
@@ -509,6 +509,7 @@ public class MainStage extends Application {
             }
         });
 
+        //Resets filters
         buttonReset.setOnMouseClicked((event) ->{    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             try{
@@ -540,6 +541,8 @@ public class MainStage extends Application {
                         buttonNext.setDisable(false);
                     }
 
+                    buttonPrev.setDisable(true);
+
                     loadListings(cars, gridpane1, vboxes, lbls, imgs);
                 }
             }catch (IOException e){
@@ -562,12 +565,84 @@ public class MainStage extends Application {
 
         Scene scene1 = new Scene(gridpane1, 660, 630);
 
+        /*
+        DESIGN OF CUSTOMER RENTAL FORM STAGE
+         */
+
+        GridPane gridpane3 = new GridPane();
+
+        gridpane3.setStyle("-fx-background-color: #b2dcf7");
+        gridpane3.setPadding(new Insets(10, 10 ,10 ,10));
+        gridpane3.getColumnConstraints().add(new ColumnConstraints(20));
+        gridpane3.getColumnConstraints().add(new ColumnConstraints(400));
+        gridpane3.getColumnConstraints().add(new ColumnConstraints(200));
+        gridpane3.getRowConstraints().add(new RowConstraints(40));
+        gridpane3.getRowConstraints().add(new RowConstraints(350));
+        gridpane3.setHgap(15);
+        gridpane3.setVgap(10);
+
+        Label formHeader = new Label("Customer Rental Form");
+        formHeader.setFont(Font.font("Courier", FontWeight.BOLD,
+                35));
+
+        TextField textName = new TextField();
+        textName.setPrefWidth(280);
+        Label lblName = new Label("Name");
+        lblName.setPrefWidth(120);
+        HBox hboxName = new HBox(lblName, textName);
+        hboxName.setPrefHeight(15);
+        hboxName.setPadding(new Insets(20, 0, 0, 0));
+
+        TextField textIC = new TextField();
+        textIC.setPrefWidth(280);
+        Label lblIC = new Label("IC/Passport Number");
+        lblIC.setPrefWidth(120);
+        HBox hboxIC = new HBox(lblIC, textIC);
+        hboxIC.setPrefHeight(15);
+
+        TextField textPhone = new TextField();
+        textPhone.setPrefWidth(280);
+        Label lblPhone = new Label("Phone Number");
+        lblPhone.setPrefWidth(120);
+        HBox hboxPhone = new HBox(lblPhone, textPhone);
+        hboxPhone.setPrefHeight(15);
+
+        TextField textAddress = new TextField();
+        textAddress.setPrefWidth(280);
+        Label lblAddress = new Label("Address");
+        lblAddress.setPrefWidth(120);
+        HBox hboxAddress = new HBox(lblAddress, textAddress);
+        hboxAddress.setPrefHeight(15);
+
+        TextField textDays = new TextField();
+        textDays.setPrefWidth(50);
+        Label lblDays = new Label("No. of days renting");
+        lblDays.setPrefWidth(120);
+        HBox hboxDays = new HBox(lblDays, textDays);
+        hboxDays.setPrefHeight(15);
+
+        Button buttonContinue = new Button("Continue to Payment");
+
+        VBox vboxForm = new VBox(hboxName, hboxPhone, hboxIC, hboxAddress, hboxDays);
+        vboxForm.setSpacing(10);
+
+        gridpane3.add(formHeader, 1, 0);
+        gridpane3.add(vboxForm, 1, 1);
+
+        Scene sceneForm = new Scene(gridpane3, 660, 390);
+
+        Stage customerFormStage = new Stage();
+        customerFormStage.setScene(sceneForm);
+        customerFormStage.setTitle("Customer Rental Form");
+
         mainStage.setTitle("IIUM Car Rental"); // Set the stage title
         mainStage.setScene(scene1); // Place the scene in the stage
         mainStage.setResizable(false);
         mainStage.show(); // Display the stage
+        customerFormStage.show();
     }
 
+    //Load listings when app launched or when filter is reset
     public void loadListings(Car[] cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs) throws FileNotFoundException {
         int len = cars.length;
         if(len>4){
@@ -593,6 +668,7 @@ public class MainStage extends Application {
         }
     }
 
+    //Load listings when next page or previous page buttons are clicked
     public void loadListings(Car[] cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs, int currPage) throws FileNotFoundException{
 
         int max, len = cars.length;
@@ -623,6 +699,7 @@ public class MainStage extends Application {
 
     }
 
+    //Load listings when filter is applied
     public void loadListings(ArrayList<Car> cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs, int currPage) throws FileNotFoundException{
         int max, len = cars.size();
         if((currPage*4 + 4) < len){
@@ -652,19 +729,17 @@ public class MainStage extends Application {
 
     }
 
+    //Displays car info in the Text Area node
     public void displayInfo(TextArea textArea, Car car){
         if (car instanceof FuelCar) {
-            String str = "Make - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - " + ((FuelCar) car).getFuel() + "\n" +
+            String str = "Cost per day - RM" + car.getCostPerDay() + "\n\nMake - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - " + ((FuelCar) car).getFuel() + "\n" +
                     "Transmission - " + ((FuelCar) car).getTransmission() + "\n" + "Fuel tank capacity (L)- " + ((FuelCar) car).getFuelCapacity() + "\n" +
-                    "MPG - " + ((FuelCar) car).getMpg() +"\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n" + "Tyre (inch) - " + car.getTyreSize() +"\n\n" +
-                    "Cost per day - RM" + car.getCostPerDay();
-            textArea.setText("Hey");
+                    "MPG - " + ((FuelCar) car).getMpg() +"\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n" + "Tyre (inch) - " + car.getTyreSize() +"\n\n";
             textArea.setText(str);
         }else{
-            String str = "Make - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - Electric" + "\n" +
-                    "Battery capacity (Wh) - " + ((ElectricCar) car).getBatteryCapacity() + "\n" + "Charge time (hr) - " + ((ElectricCar) car).getChargeTime() +"\n" + "Driving range (km) - " + ((ElectricCar) car).getDrivingRange() + "\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n" + "Tyre (inch) - " + car.getTyreSize() + "\n\n" +
-                    "Cost per day - RM" + car.getCostPerDay();
-            textArea.setText("Hey");
+            String str = "Cost per day - RM" + car.getCostPerDay() + "\n\nMake - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - Electric" + "\n" +
+                    "Battery capacity (Wh) - " + ((ElectricCar) car).getBatteryCapacity() + "\n" + "Charge time (hr) - " + ((ElectricCar) car).getChargeTime() +"\n" + "Driving range (km) - " + ((ElectricCar) car).getDrivingRange() +
+                    "\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n" + "Tyre (inch) - " + car.getTyreSize();
             textArea.setText(str);
         }
     }
