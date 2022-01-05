@@ -86,9 +86,9 @@ public class MainStage extends Application {
         lbl1.setFont(Font.font("Courier", FontWeight.BOLD,
                 18));
 
-        Button button1 = new Button("Rent now!");
-        button1.setAlignment(Pos.CENTER);
-        HBox hboxBtn1 = new HBox(button1);
+        Button buttonRent1 = new Button("Rent now!");
+        buttonRent1.setAlignment(Pos.CENTER);
+        HBox hboxBtn1 = new HBox(buttonRent1);
         hboxBtn1.setPadding(new Insets(0 , 0, 0 ,65));
 
         VBox vbox1 = new VBox();
@@ -108,9 +108,9 @@ public class MainStage extends Application {
         lbl2.setFont(Font.font("Courier", FontWeight.BOLD,
                 18));
 
-        Button button2 = new Button("Rent now!");
-        button2.setAlignment(Pos.CENTER);
-        HBox hboxBtn2 = new HBox(button2);
+        Button buttonRent2 = new Button("Rent now!");
+        buttonRent2.setAlignment(Pos.CENTER);
+        HBox hboxBtn2 = new HBox(buttonRent2);
         hboxBtn2.setPadding(new Insets(0 , 0, 0 ,65));
 
         VBox vbox2 = new VBox();
@@ -130,9 +130,9 @@ public class MainStage extends Application {
         lbl3.setFont(Font.font("Courier", FontWeight.BOLD,
                 18));
 
-        Button button3 = new Button("Rent now!");
-        button3.setAlignment(Pos.CENTER);
-        HBox hboxBtn3 = new HBox(button3);
+        Button buttonRent3 = new Button("Rent now!");
+        buttonRent3.setAlignment(Pos.CENTER);
+        HBox hboxBtn3 = new HBox(buttonRent3);
         hboxBtn3.setPadding(new Insets(0 , 0, 0 ,65));
 
         VBox vbox3 = new VBox();
@@ -152,9 +152,9 @@ public class MainStage extends Application {
         lbl4.setFont(Font.font("Courier", FontWeight.BOLD,
                 18));
 
-        Button button4 = new Button("Rent now!");
-        button4.setAlignment(Pos.CENTER);
-        HBox hboxBtn4 = new HBox(button4);
+        Button buttonRent4 = new Button("Rent now!");
+        buttonRent4.setAlignment(Pos.CENTER);
+        HBox hboxBtn4 = new HBox(buttonRent4);
         hboxBtn4.setPadding(new Insets(0 , 0, 0 ,65));
 
         VBox vbox4 = new VBox();
@@ -302,7 +302,142 @@ public class MainStage extends Application {
         HBox hboxBtnNext = new HBox(buttonNext);
         hboxBtnNext.setPadding(new Insets(10 , 0, 0 ,65));
 
-        //Click event handling
+        VBox[] vboxes = {vbox1, vbox2, vbox3, vbox4};
+        Label[] lbls = {lbl1, lbl2, lbl3, lbl4};
+        ImageView[] imgs = {img1, img2, img3, img4};
+
+
+        //Add gridpane children
+        gridpane1.add(logo, 1, 0);
+        gridpane1.add(vbox5, 2, 1);
+        gridpane1.add(gridpane2, 2, 2);
+        gridpane1.add(hboxFilterBtns, 2, 3);
+        gridpane1.add(hboxBtnPrev, 0, 3);
+        gridpane1.add(hboxBtnNext, 1, 3);
+
+        gridpane2.add(vbox6, 0, 0);
+        gridpane2.add(vbox7, 1, 0);
+
+        loadListings(cars, gridpane1, vboxes, lbls, imgs);
+
+        Scene scene1 = new Scene(gridpane1, 660, 630);
+
+        /*
+        DESIGN OF CUSTOMER RENTAL FORM STAGE
+         */
+
+        //Customer enters details into these text fields
+        GridPane gridpane3 = new GridPane();
+
+        gridpane3.setStyle("-fx-background-color: #b2dcf7");
+        gridpane3.setPadding(new Insets(10, 10 ,10 ,10));
+        gridpane3.getColumnConstraints().add(new ColumnConstraints(20));
+        gridpane3.getColumnConstraints().add(new ColumnConstraints(400));
+        gridpane3.getColumnConstraints().add(new ColumnConstraints(200));
+        gridpane3.getRowConstraints().add(new RowConstraints(40));
+        gridpane3.getRowConstraints().add(new RowConstraints(350));
+        gridpane3.setHgap(15);
+        gridpane3.setVgap(10);
+
+        Label formHeader = new Label("Customer Rental Form");
+        formHeader.setFont(Font.font("Courier", FontWeight.BOLD,
+                35));
+
+        TextField textName = new TextField();
+        textName.setPrefWidth(280);
+        Label lblName = new Label("Full name");
+        lblName.setPrefWidth(120);
+        HBox hboxName = new HBox(lblName, textName);
+        hboxName.setPrefHeight(15);
+        hboxName.setPadding(new Insets(20, 0, 0, 0));
+
+        TextField textIC = new TextField();
+        textIC.setPrefWidth(280);
+        Label lblIC = new Label("IC/Passport Number");
+        lblIC.setPrefWidth(120);
+        HBox hboxIC = new HBox(lblIC, textIC);
+        hboxIC.setPrefHeight(15);
+
+        TextField textPhone = new TextField();
+        textPhone.setPrefWidth(280);
+        Label lblPhone = new Label("Phone Number");
+        lblPhone.setPrefWidth(120);
+        HBox hboxPhone = new HBox(lblPhone, textPhone);
+        hboxPhone.setPrefHeight(15);
+
+        TextField textAddress = new TextField();
+        textAddress.setPrefWidth(280);
+        Label lblAddress = new Label("Address");
+        lblAddress.setPrefWidth(120);
+        HBox hboxAddress = new HBox(lblAddress, textAddress);
+        hboxAddress.setPrefHeight(15);
+
+        TextField textDays = new TextField();
+        textDays.setPrefWidth(50);
+        Label lblDays = new Label("No. of days renting");
+        lblDays.setPrefWidth(120);
+        HBox hboxDays = new HBox(lblDays, textDays);
+        hboxDays.setPrefHeight(15);
+
+        Label lblPaymentDetails = new Label("Payment Details");
+        lblPaymentDetails.setFont(Font.font("Courier", FontWeight.BOLD,
+                18));
+        lblPaymentDetails.setPrefWidth(200);
+
+        Label lblTotal = new Label("Total is RM");
+        lblTotal.setFont(Font.font("Courier",
+                18));
+
+        HBox hboxPaymentDetails = new HBox(lblPaymentDetails, lblTotal);
+
+        TextField textCardNo = new TextField();
+        textCardNo.setPrefWidth(280);
+        Label lblCardNo = new Label("Card number");
+        lblCardNo.setPrefWidth(120);
+        HBox hboxCardNo = new HBox(lblCardNo, textCardNo);
+        hboxCardNo.setPrefHeight(15);
+
+        TextField textExpiryMonth = new TextField();
+        textExpiryMonth.setPrefWidth(30);
+        Label lblForwardSlash = new Label(" / ");
+        lblForwardSlash.setFont(Font.font("Courier", 15));
+        TextField textExpiryYear = new TextField();
+        textExpiryYear.setPrefWidth(30);
+        Label lblExpiryDate = new Label("Expiry Date");
+        lblExpiryDate.setPrefWidth(120);
+        HBox hboxExpiryDate = new HBox(lblExpiryDate, textExpiryMonth, lblForwardSlash, textExpiryYear);
+        hboxExpiryDate.setPrefHeight(15);
+
+        Button buttonSubmit = new Button("Submit");
+        HBox hboxSubmit= new HBox(buttonSubmit);
+        hboxSubmit.setPadding(new Insets(20, 0, 0, 170));
+
+        VBox vboxForm = new VBox(hboxName, hboxPhone, hboxIC, hboxAddress, hboxDays, hboxPaymentDetails, hboxCardNo, hboxExpiryDate, hboxSubmit);
+        vboxForm.setSpacing(10);
+
+        ImageView imgCarSelected = new ImageView();
+        imgCarSelected.setFitHeight(125);
+        imgCarSelected.setFitWidth(200);
+        imgCarSelected.setPreserveRatio(false);
+
+        Label lblCarSelected = new Label("HEllo");
+        lblCarSelected.setFont(Font.font("Courier", FontWeight.BOLD,
+                18));
+
+        VBox vboxCarSelected = new VBox();
+        vboxCarSelected.setPrefWidth(200);
+//        vboxCarSelected.setPrefHeight(100);
+        vboxCarSelected.setPadding(new Insets(65, 0, 0 ,0));
+        vboxCarSelected.setStyle("-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 2px");
+        vboxCarSelected.getChildren().addAll(imgCarSelected, lblCarSelected);
+
+        gridpane3.add(formHeader, 1, 0);
+        gridpane3.add(vboxForm, 1, 1);
+        gridpane3.add(vboxCarSelected, 2, 1);
+
+        /*
+        CLICK EVENT HANDLING
+         */
 
         vbox1.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
@@ -348,9 +483,16 @@ public class MainStage extends Application {
             }
         });
 
-        VBox[] vboxes = {vbox1, vbox2, vbox3, vbox4};
-        Label[] lbls = {lbl1, lbl2, lbl3, lbl4};
-        ImageView[] imgs = {img1, img2, img3, img4};
+        buttonRent1.setOnMouseClicked((event) -> {    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            if(source == buttonRent1) {
+                if(filtered){
+                    displayInfo(carSpecs, carFilteredList.get(currPage*4+0));
+                }else{
+                    displayInfo(carSpecs, cars[currPage*4+0]);
+                }
+            }
+        });
 
         //Go to next page
         buttonNext.setOnMouseClicked((event) ->{    // lambda expression
@@ -550,86 +692,7 @@ public class MainStage extends Application {
             }
         });
 
-        //Add gridpane children
-        gridpane1.add(logo, 1, 0);
-        gridpane1.add(vbox5, 2, 1);
-        gridpane1.add(gridpane2, 2, 2);
-        gridpane1.add(hboxFilterBtns, 2, 3);
-        gridpane1.add(hboxBtnPrev, 0, 3);
-        gridpane1.add(hboxBtnNext, 1, 3);
-
-        gridpane2.add(vbox6, 0, 0);
-        gridpane2.add(vbox7, 1, 0);
-
-        loadListings(cars, gridpane1, vboxes, lbls, imgs);
-
-        Scene scene1 = new Scene(gridpane1, 660, 630);
-
-        /*
-        DESIGN OF CUSTOMER RENTAL FORM STAGE
-         */
-
-        GridPane gridpane3 = new GridPane();
-
-        gridpane3.setStyle("-fx-background-color: #b2dcf7");
-        gridpane3.setPadding(new Insets(10, 10 ,10 ,10));
-        gridpane3.getColumnConstraints().add(new ColumnConstraints(20));
-        gridpane3.getColumnConstraints().add(new ColumnConstraints(400));
-        gridpane3.getColumnConstraints().add(new ColumnConstraints(200));
-        gridpane3.getRowConstraints().add(new RowConstraints(40));
-        gridpane3.getRowConstraints().add(new RowConstraints(350));
-        gridpane3.setHgap(15);
-        gridpane3.setVgap(10);
-
-        Label formHeader = new Label("Customer Rental Form");
-        formHeader.setFont(Font.font("Courier", FontWeight.BOLD,
-                35));
-
-        TextField textName = new TextField();
-        textName.setPrefWidth(280);
-        Label lblName = new Label("Name");
-        lblName.setPrefWidth(120);
-        HBox hboxName = new HBox(lblName, textName);
-        hboxName.setPrefHeight(15);
-        hboxName.setPadding(new Insets(20, 0, 0, 0));
-
-        TextField textIC = new TextField();
-        textIC.setPrefWidth(280);
-        Label lblIC = new Label("IC/Passport Number");
-        lblIC.setPrefWidth(120);
-        HBox hboxIC = new HBox(lblIC, textIC);
-        hboxIC.setPrefHeight(15);
-
-        TextField textPhone = new TextField();
-        textPhone.setPrefWidth(280);
-        Label lblPhone = new Label("Phone Number");
-        lblPhone.setPrefWidth(120);
-        HBox hboxPhone = new HBox(lblPhone, textPhone);
-        hboxPhone.setPrefHeight(15);
-
-        TextField textAddress = new TextField();
-        textAddress.setPrefWidth(280);
-        Label lblAddress = new Label("Address");
-        lblAddress.setPrefWidth(120);
-        HBox hboxAddress = new HBox(lblAddress, textAddress);
-        hboxAddress.setPrefHeight(15);
-
-        TextField textDays = new TextField();
-        textDays.setPrefWidth(50);
-        Label lblDays = new Label("No. of days renting");
-        lblDays.setPrefWidth(120);
-        HBox hboxDays = new HBox(lblDays, textDays);
-        hboxDays.setPrefHeight(15);
-
-        Button buttonContinue = new Button("Continue to Payment");
-
-        VBox vboxForm = new VBox(hboxName, hboxPhone, hboxIC, hboxAddress, hboxDays);
-        vboxForm.setSpacing(10);
-
-        gridpane3.add(formHeader, 1, 0);
-        gridpane3.add(vboxForm, 1, 1);
-
-        Scene sceneForm = new Scene(gridpane3, 660, 390);
+        Scene sceneForm = new Scene(gridpane3, 700, 470);
 
         Stage customerFormStage = new Stage();
         customerFormStage.setScene(sceneForm);
