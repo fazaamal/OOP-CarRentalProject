@@ -25,6 +25,12 @@ public class FuelCar extends Car{
         return mpg;
     }
 
+    @Override
+    public double getDrivingRange() {
+        double range = (Math.round(mpg * fuelCapacity * 0.264172 * 100 * 1.6)/100);
+        return range;
+    }
+
     public void setFuel(String fuel) {
         this.fuel = fuel;
     }

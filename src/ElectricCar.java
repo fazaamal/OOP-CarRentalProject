@@ -19,6 +19,7 @@ public class ElectricCar extends Car{
         return chargeTime;
     }
 
+    @Override
     public double getDrivingRange() {
         return drivingRange;
     }

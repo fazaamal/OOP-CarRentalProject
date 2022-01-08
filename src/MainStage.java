@@ -32,7 +32,7 @@ public class MainStage extends Application {
     private Car kiaObj = new ElectricCar("C3", "Kia", "EV6", "Hatchback", "Red", "Electric", ".\\images\\kia.jpg", 2021,
             5, 55, 17, 2500, 82500, 6, 400);
     private Car mercObj = new FuelCar("C4", "Mercedes", "E Class", "Sedan", "White", "Manual", "Diesel", ".\\images\\mercE.png",
-            2021, 5, 80, 18, 1750, 80, 45);
+            2021, 5, 80, 18, 1750, 50, 45);
     private Car x70Obj = new FuelCar("C5", "Proton", "X70", "SUV", "Red", "Automatic", "Petrol", ".\\images\\protonX70.jpg",
             2019, 7, 50, 19, 1650, 60, 20.5);
     private Car peroduaObj = new FuelCar("C6", "Perodua", "Myvi", "Hatchback", "Blue", "Automatic", "Petrol", ".\\images\\myvi.jpg",
@@ -442,7 +442,6 @@ public class MainStage extends Application {
 
         VBox vboxCarSelected = new VBox();
         vboxCarSelected.setPrefWidth(200);
-//        vboxCarSelected.setPrefHeight(100);
         vboxCarSelected.setPadding(new Insets(65, 0, 0 ,0));
         vboxCarSelected.setStyle("-fx-background-color: white; -fx-border-color: grey; -fx-border-width: 2px");
         vboxCarSelected.getChildren().addAll(imgCarSelected, lblCarSelected);
@@ -533,14 +532,21 @@ public class MainStage extends Application {
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
 
             if(source==buttonViewBookings){
+                System.out.println("----------------------------------------------------------------");
+                int count = 0;
                 for(Booking booking: bookings){
                     if(booking == null){
+                        if(count==0){
+                            System.out.println("\nThere are currently no bookings");
+                        }
                         break;
                     }else{
                         String str = "\nBooking ID: "  + booking.getBookingID() + "\nName: " + booking.getName() + "\nPhone number: " + booking.getPhoneNo() + "\nIC/Passport no.: " +booking.getIcNo() + "\nAddress: " + booking.getAddress() + "\nCar ID: " + booking.getCarID() + "\nDays booked: " + booking.getDaysBooked();
                         System.out.println(str);
                     }
+                    count++;
                 }
+                System.out.println("\n----------------------------------------------------------------");
             }
         });
 
@@ -589,7 +595,6 @@ public class MainStage extends Application {
 
                     }
                 }
-//                System.out.println(bookings[0].getBookingID() +" " + bookings[0].getName());
                 textName.setText("");
                 textPhone.setText("");
                 textIC.setText("");
@@ -816,12 +821,6 @@ public class MainStage extends Application {
 
                     buttonPrev.setDisable(true);
 
-//                    if((currPage*4-4)<0){
-//                        buttonPrev.setDisable(true);
-//                    }else{
-//                        buttonPrev.setDisable(false);
-//                    }
-
                     loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, btnsRentNow, currPage);
 
                 }
@@ -991,7 +990,7 @@ public class MainStage extends Application {
         if (car instanceof FuelCar) {
             String str = "Cost per day - RM" + car.getCostPerDay() + "\n\nMake - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - " + ((FuelCar) car).getFuel() + "\n" +
                     "Transmission - " + ((FuelCar) car).getTransmission() + "\n" + "Fuel tank capacity (L)- " + ((FuelCar) car).getFuelCapacity() + "\n" +
-                    "MPG - " + ((FuelCar) car).getMpg() +"\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n" + "Tyre (inch) - " + car.getTyreSize() +"\n\n";
+                    "MPG - " + ((FuelCar) car).getMpg() + "\nDriving range (km): " + car.getDrivingRange() +"\n" + "Year - " + car.getYear()+"\n" + "Colour - " + car.getColour() + "\n" + "Weight (kg) - " + car.getWeight() + "\n" + "Tyre (inch) - " + car.getTyreSize() +"\n\n";
             textArea.setText(str);
         }else{
             String str = "Cost per day - RM" + car.getCostPerDay() + "\n\nMake - " + car.getMake() +"\n" + "Model - " + car.getModel() +"\n" + "Type - " +car.getType() + "\n" + "Fuel - Electric" + "\n" +
@@ -1000,19 +999,4 @@ public class MainStage extends Application {
             textArea.setText(str);
         }
     }
-
-    public static Car[] getSlice(Car[] array, int startIndex, int endIndex)
-    {
-
-        Car[] slicedArray = new Car[endIndex - startIndex];
-
-        for (int i = 0; i < slicedArray.length; i++)
-        {
-            slicedArray[i] = array[startIndex + i];
-        }
-
-        return slicedArray;
-    }
-
-
 }

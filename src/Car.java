@@ -1,4 +1,4 @@
-public class Car {
+public abstract class Car {
     private String carId, bookingID = null, make, model, type, colour, imgPath, fuel;
     private int year, seats;
     private double costPerDay, tyreSize, weight;
@@ -69,6 +69,8 @@ public class Car {
     public double getWeight() {
         return weight;
     }
+
+    abstract public double getDrivingRange();
 
     public void setCarId(String carId) {
         this.carId = carId;
