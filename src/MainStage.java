@@ -546,7 +546,6 @@ public class MainStage extends Application {
                             str += "\n";
                         }
                         str += "\nBooking ID: "  + booking.getBookingID() + "\nName: " + booking.getName() + "\nPhone number: " + booking.getPhoneNo() + "\nIC/Passport no.: " +booking.getIcNo() + "\nAddress: " + booking.getAddress() + "\nCar ID: " + booking.getCarID() + "\nDays booked: " + booking.getDaysBooked();
-                        System.out.println(str);
                     }
                     count++;
                 }
