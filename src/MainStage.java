@@ -25,23 +25,23 @@ import static java.lang.Integer.parseInt;
 
 public class MainStage extends Application {
     //Initialising car objects
-    private Car teslaSObj = new ElectricCar("C1", "Tesla", "Model S", "Sedan", "Grey", "Electric", ".\\images\\teslaS.jpg", 2020,
+    private Car teslaSObj = new ElectricCar("C1", "Tesla", "Model S", "Sedan", "Grey", "Electric", ".\\src\\images\\teslaS.jpg", 2020,
             5, 70, 21, 2000, 99000, 8, 400);
-    private Car leafObj = new ElectricCar("C2", "Nissan", "Leaf", "Hatchback", "Grey", "Electric", ".\\images\\nissanLeaf.jpg", 2019,
+    private Car leafObj = new ElectricCar("C2", "Nissan", "Leaf", "Hatchback", "Grey", "Electric", ".\\src\\images\\nissanLeaf.jpg", 2019,
             5, 45, 17, 1580, 50000, 6, 200);
-    private Car kiaObj = new ElectricCar("C3", "Kia", "EV6", "Hatchback", "Red", "Electric", ".\\images\\kia.jpg", 2021,
+    private Car kiaObj = new ElectricCar("C3", "Kia", "EV6", "Hatchback", "Red", "Electric", ".\\src\\images\\kia.jpg", 2021,
             5, 55, 17, 2500, 82500, 6, 400);
-    private Car mercObj = new FuelCar("C4", "Mercedes", "E Class", "Sedan", "White", "Manual", "Diesel", ".\\images\\mercE.png",
+    private Car mercObj = new FuelCar("C4", "Mercedes", "E Class", "Sedan", "White", "Manual", "Diesel", ".\\src\\images\\mercE.png",
             2021, 5, 80, 18, 1750, 50, 45);
-    private Car x70Obj = new FuelCar("C5", "Proton", "X70", "SUV", "Red", "Automatic", "Petrol", ".\\images\\protonX70.jpg",
+    private Car x70Obj = new FuelCar("C5", "Proton", "X70", "SUV", "Red", "Automatic", "Petrol", ".\\src\\images\\protonX70.jpg",
             2019, 7, 50, 19, 1650, 60, 20.5);
-    private Car peroduaObj = new FuelCar("C6", "Perodua", "Myvi", "Hatchback", "Blue", "Automatic", "Petrol", ".\\images\\myvi.jpg",
+    private Car peroduaObj = new FuelCar("C6", "Perodua", "Myvi", "Hatchback", "Blue", "Automatic", "Petrol", ".\\src\\images\\myvi.jpg",
             2018, 5, 30, 16, 1300, 40, 20.5);
-    private Car fordObj = new FuelCar("C7", "Ford", "F150", "Truck", "Black", "Manual", "Diesel" , ".\\images\\f150.jpg",
+    private Car fordObj = new FuelCar("C7", "Ford", "F150", "Truck", "Black", "Manual", "Diesel" , ".\\src\\images\\f150.jpg",
             2021, 6, 65, 31, 4500, 120, 20);
-    private Car corsaObj = new FuelCar("C8", "Ford", "Corsa", "Hatchback", "Red", "Automatic", "Petrol", ".\\images\\corsa.png",
+    private Car corsaObj = new FuelCar("C8", "Ford", "Corsa", "Hatchback", "Red", "Automatic", "Petrol", ".\\src\\images\\corsa.png",
             2019, 5, 38, 16, 1100, 45, 22);
-    private Car teslaXObj = new ElectricCar("C9", "Tesla", "Model X", "SUV", "Blue", "Electric", ".\\images\\teslaX.png", 2018,
+    private Car teslaXObj = new ElectricCar("C9", "Tesla", "Model X", "SUV", "Blue", "Electric", ".\\src\\images\\teslaX.png", 2018,
             7, 90, 21, 2500, 120000, 8, 380);
 
     private Car[] cars = {teslaSObj, leafObj, mercObj, x70Obj, kiaObj, peroduaObj, fordObj, corsaObj, teslaXObj};
@@ -77,7 +77,7 @@ public class MainStage extends Application {
         gridpane2.getColumnConstraints().add(new ColumnConstraints(100));
         gridpane2.getColumnConstraints().add(new ColumnConstraints(100));
 
-        ImageView logo = new ImageView(new Image(new FileInputStream(".\\images\\logo.png")));
+        ImageView logo = new ImageView(new Image(new FileInputStream(".\\src\\images\\logo.png")));
         logo.setFitWidth(200);
 
         logo.setPreserveRatio(true);
