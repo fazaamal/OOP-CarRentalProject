@@ -48,11 +48,12 @@ public class MainStage extends Application {
     private int currPage = 0;
     private boolean filtered = false;
     private int buttonClicked = 0;
+    private Alert a = new Alert(Alert.AlertType.INFORMATION);
 
     private ArrayList<Car> carFilteredList = new ArrayList<Car>();
     private ArrayList<String> filters = new ArrayList<String>();
-
     private Booking[] bookings = new Booking[cars.length];
+
     @Override
     public void start(Stage mainStage) throws Exception{
 
@@ -532,21 +533,26 @@ public class MainStage extends Application {
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
 
             if(source==buttonViewBookings){
-                System.out.println("----------------------------------------------------------------");
                 int count = 0;
+                String str = "";
                 for(Booking booking: bookings){
                     if(booking == null){
                         if(count==0){
-                            System.out.println("\nThere are currently no bookings");
+                            str = "There are currently no bookings";
                         }
                         break;
                     }else{
-                        String str = "\nBooking ID: "  + booking.getBookingID() + "\nName: " + booking.getName() + "\nPhone number: " + booking.getPhoneNo() + "\nIC/Passport no.: " +booking.getIcNo() + "\nAddress: " + booking.getAddress() + "\nCar ID: " + booking.getCarID() + "\nDays booked: " + booking.getDaysBooked();
+                        if(count!=0){
+                            str += "\n";
+                        }
+                        str += "\nBooking ID: "  + booking.getBookingID() + "\nName: " + booking.getName() + "\nPhone number: " + booking.getPhoneNo() + "\nIC/Passport no.: " +booking.getIcNo() + "\nAddress: " + booking.getAddress() + "\nCar ID: " + booking.getCarID() + "\nDays booked: " + booking.getDaysBooked();
                         System.out.println(str);
                     }
                     count++;
                 }
-                System.out.println("\n----------------------------------------------------------------");
+
+                a.setContentText(str);
+                a.show();
             }
         });
 
@@ -565,12 +571,18 @@ public class MainStage extends Application {
                             continue;
                         }
                     }
-                    System.out.println("\nRental Confirmed for:");
-                    System.out.println(carFilteredList.get(currPage*4+buttonClicked).getMake() + " " + carFilteredList.get(currPage*4+buttonClicked).getModel() + " for " + textDays.getText() + " days.");
+
+                    a.setContentText("Rental confirmed for: \n" + carFilteredList.get(currPage*4+buttonClicked).getMake() + " " + carFilteredList.get(currPage*4+buttonClicked).getModel() + " for " + textDays.getText() + " days.");
+                    a.show();
 
                     currPage = 0;
                     try{
                         loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, btnsRentNow, currPage);
+                        if((currPage+1)*4>=carFilteredList.size()){
+                            buttonNext.setDisable(true);
+                        }else{
+                            buttonNext.setDisable(false);
+                        }
                     }catch(IOException e){
 
                     }
@@ -585,12 +597,19 @@ public class MainStage extends Application {
                             continue;
                         }
                     }
-                    System.out.println("\nRental Confirmed for:");
-                    System.out.println(cars[currPage*4+buttonClicked].getMake() + " " + cars[currPage*4+buttonClicked].getModel() + " for " + textDays.getText() + " days.");
+
+                    a.setContentText("Rental confirmed for: \n" + cars[currPage*4+buttonClicked].getMake() + " " + cars[currPage*4+buttonClicked].getModel() + " for " + textDays.getText() + " days.");
+                    a.show();
 
                     currPage = 0;
                     try{
                         loadListings(cars, gridpane1, vboxes, lbls, imgs, btnsRentNow);
+                        buttonPrev.setDisable(true);
+                        if((currPage+1)*4>=cars.length){
+                            buttonNext.setDisable(true);
+                        }else{
+                            buttonNext.setDisable(false);
+                        }
                     }catch(IOException e){
 
                     }
