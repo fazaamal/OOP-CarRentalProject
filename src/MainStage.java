@@ -311,7 +311,11 @@ public class MainStage extends Application {
         VBox[] vboxes = {vbox1, vbox2, vbox3, vbox4};
         Label[] lbls = {lbl1, lbl2, lbl3, lbl4};
         ImageView[] imgs = {img1, img2, img3, img4};
+        Button[] btnsRentNow = {buttonRent1, buttonRent2, buttonRent3, buttonRent4};
 
+        Button buttonViewBookings = new Button("View current bookings");
+        HBox hboxViewBookings = new HBox(buttonViewBookings);
+        hboxViewBookings.setPadding(new Insets(0, 0, 0, 35));
 
         //Add gridpane children
         gridpane1.add(logo, 1, 0);
@@ -320,11 +324,12 @@ public class MainStage extends Application {
         gridpane1.add(hboxFilterBtns, 2, 3);
         gridpane1.add(hboxBtnPrev, 0, 3);
         gridpane1.add(hboxBtnNext, 1, 3);
+        gridpane1.add(hboxViewBookings, 2, 0);
 
         gridpane2.add(vbox6, 0, 0);
         gridpane2.add(vbox7, 1, 0);
 
-        loadListings(cars, gridpane1, vboxes, lbls, imgs);
+        loadListings(cars, gridpane1, vboxes, lbls, imgs, btnsRentNow);
 
         Scene scene1 = new Scene(gridpane1, 660, 630);
 
@@ -462,13 +467,16 @@ public class MainStage extends Application {
         textDays.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                if(filtered){
-                    System.out.println(filtered);
-                    lblTotal.setText("Total is RM" + parseInt(textDays.getText())*carFilteredList.get(currPage*4+buttonClicked).getCostPerDay());
-                }else{
-                    System.out.println(filtered);
-                    lblTotal.setText("Total is RM" + parseInt(textDays.getText())*cars[currPage*4+buttonClicked].getCostPerDay());
+                try{
+                    if(filtered){
+                        lblTotal.setText("Total is RM" + parseInt(textDays.getText())*carFilteredList.get(currPage*4+buttonClicked).getCostPerDay());
+                    }else{
+                        lblTotal.setText("Total is RM" + parseInt(textDays.getText())*cars[currPage*4+buttonClicked].getCostPerDay());
+                    }
+                }catch(Exception e){
+
                 }
+
             }
         });
 
@@ -520,6 +528,23 @@ public class MainStage extends Application {
             }
         });
 
+        //View bookings button
+        buttonViewBookings.setOnMouseClicked((event) ->{    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+
+            if(source==buttonViewBookings){
+                for(Booking booking: bookings){
+                    if(booking == null){
+                        break;
+                    }else{
+                        String str = "\nBooking ID: "  + booking.getBookingID() + "\nName: " + booking.getName() + "\nPhone number: " + booking.getPhoneNo() + "\nIC/Passport no.: " +booking.getIcNo() + "\nAddress: " + booking.getAddress() + "\nCar ID: " + booking.getCarID() + "\nDays booked: " + booking.getDaysBooked();
+                        System.out.println(str);
+                    }
+                }
+            }
+        });
+
+        //Submit button on form
         buttonSubmit.setOnMouseClicked((event) -> {
             javafx.scene.Node source1 = (javafx.scene.Node) event.getSource();
             if(source1==buttonSubmit){
@@ -529,9 +554,19 @@ public class MainStage extends Application {
                             bookings[i] = new Booking(("B"+(i+1)), carFilteredList.get(currPage*4+buttonClicked).getCarId(), parseInt(textDays.getText()), textName.getText(), textIC.getText(), textAddress.getText(), textPhone.getText(), textCardNo.getText(),
                                     parseInt(textExpiryMonth.getText()), parseInt(textExpiryYear.getText()), parseInt(textDays.getText())*carFilteredList.get(currPage*4+buttonClicked).getCostPerDay());
                             carFilteredList.get(currPage*4+buttonClicked).setBookingID(("B"+(i+1)));
+                            break;
                         }else{
                             continue;
                         }
+                    }
+                    System.out.println("\nRental Confirmed for:");
+                    System.out.println(carFilteredList.get(currPage*4+buttonClicked).getMake() + " " + carFilteredList.get(currPage*4+buttonClicked).getModel() + " for " + textDays.getText() + " days.");
+
+                    currPage = 0;
+                    try{
+                        loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, btnsRentNow, currPage);
+                    }catch(IOException e){
+
                     }
                 }else{
                     for(int i=0; i<cars.length; i++){
@@ -539,21 +574,37 @@ public class MainStage extends Application {
                             bookings[i] = new Booking(("B"+(i+1)), cars[currPage*4+buttonClicked].getCarId(), parseInt(textDays.getText()), textName.getText(), textIC.getText(), textAddress.getText(), textPhone.getText(), textCardNo.getText(),
                                     parseInt(textExpiryMonth.getText()), parseInt(textExpiryYear.getText()), parseInt(textDays.getText())*cars[currPage*4+buttonClicked].getCostPerDay());
                             cars[currPage*4+buttonClicked].setBookingID(("B"+(i+1)));
+                            break;
                         }else{
                             continue;
                         }
                     }
+                    System.out.println("\nRental Confirmed for:");
+                    System.out.println(cars[currPage*4+buttonClicked].getMake() + " " + cars[currPage*4+buttonClicked].getModel() + " for " + textDays.getText() + " days.");
+
+                    currPage = 0;
+                    try{
+                        loadListings(cars, gridpane1, vboxes, lbls, imgs, btnsRentNow);
+                    }catch(IOException e){
+
+                    }
                 }
 //                System.out.println(bookings[0].getBookingID() +" " + bookings[0].getName());
-
-                for(TextField textField: textFields){
-                    textField.setText("");
-                }
+                textName.setText("");
+                textPhone.setText("");
+                textIC.setText("");
+                textAddress.setText("");
+                textDays.setText("");
+                textCardNo.setText("");
+                textExpiryMonth.setText("");
+                textExpiryYear.setText("");
+                lblTotal.setText("Total is ");
 
                 customerFormStage.close();
             }
         });
 
+        //Rent now! buttons
         buttonRent1.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
             try{
@@ -642,7 +693,7 @@ public class MainStage extends Application {
                             buttonNext.setDisable(false);
                         }
 
-                        loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, currPage);
+                        loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, btnsRentNow, currPage);
                     }else{
                         if((currPage+1)*4>=cars.length){
                             buttonNext.setDisable(true);
@@ -650,7 +701,7 @@ public class MainStage extends Application {
                             buttonNext.setDisable(false);
                         }
 
-                        loadListings(cars, gridpane1, vboxes, lbls, imgs, currPage);
+                        loadListings(cars, gridpane1, vboxes, lbls, imgs, btnsRentNow, currPage);
                     }
                 }
             }catch (IOException e){
@@ -673,9 +724,9 @@ public class MainStage extends Application {
                     }
 
                     if(filtered){
-                        loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, currPage);
+                        loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, btnsRentNow, currPage);
                     }else{
-                        loadListings(cars, gridpane1, vboxes, lbls, imgs, currPage);
+                        loadListings(cars, gridpane1, vboxes, lbls, imgs, btnsRentNow, currPage);
                     }
                 }
             }catch (IOException e){
@@ -771,7 +822,7 @@ public class MainStage extends Application {
 //                        buttonPrev.setDisable(false);
 //                    }
 
-                    loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, currPage);
+                    loadListings(carFilteredList, gridpane1, vboxes, lbls, imgs, btnsRentNow, currPage);
 
                 }
             }catch (IOException e){
@@ -813,7 +864,7 @@ public class MainStage extends Application {
 
                     buttonPrev.setDisable(true);
 
-                    loadListings(cars, gridpane1, vboxes, lbls, imgs);
+                    loadListings(cars, gridpane1, vboxes, lbls, imgs, btnsRentNow);
                 }
             }catch (IOException e){
                 e.printStackTrace();
@@ -825,7 +876,7 @@ public class MainStage extends Application {
     }
 
     //Load listings when app launched or when filter is reset
-    public void loadListings(Car[] cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs) throws FileNotFoundException {
+    public void loadListings(Car[] cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs, Button[] btns) throws FileNotFoundException {
         int len = cars.length;
         if(len>4){
             len = 4;
@@ -838,6 +889,13 @@ public class MainStage extends Application {
         for(int i=0; i<len; i++){
             imgs[i].setImage(new Image(new FileInputStream(cars[i].getImgPath())));
             lbls[i].setText(cars[i].getMake() + " " + cars[i].getModel());
+
+            if(cars[i].getBookingID()==null){
+                btns[i].setDisable(false);
+            }else{
+                btns[i].setDisable(true);
+            }
+
             if(i==0){
                 gridpane.add(vboxes[i], 0, 1);
             }else if(i==1){
@@ -851,7 +909,7 @@ public class MainStage extends Application {
     }
 
     //Load listings when next page or previous page buttons are clicked
-    public void loadListings(Car[] cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs, int currPage) throws FileNotFoundException{
+    public void loadListings(Car[] cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs, Button[] btns, int currPage) throws FileNotFoundException{
 
         int max, len = cars.length;
         if((currPage*4 + 4) < len){
@@ -868,6 +926,12 @@ public class MainStage extends Application {
             imgs[i-currPage*4].setImage(new Image(new FileInputStream(cars[i].getImgPath())));
             lbls[i-currPage*4].setText(cars[i].getMake() + " " + cars[i].getModel());
 
+            if(cars[i].getBookingID()==null){
+                btns[i-currPage*4].setDisable(false);
+            }else{
+                btns[i-currPage*4].setDisable(true);
+            }
+
             if(i-currPage*4==0){
                 gridpane.add(vboxes[i-currPage*4], 0, 1);
             }else if(i-currPage*4==1){
@@ -882,7 +946,7 @@ public class MainStage extends Application {
     }
 
     //Load listings when filter is applied
-    public void loadListings(ArrayList<Car> cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs, int currPage) throws FileNotFoundException{
+    public void loadListings(ArrayList<Car> cars, GridPane gridpane, VBox[] vboxes, Label[] lbls, ImageView[] imgs, Button[] btns, int currPage) throws FileNotFoundException{
         int max, len = cars.size();
         if((currPage*4 + 4) < len){
             max = currPage*4 + 4;
@@ -897,6 +961,12 @@ public class MainStage extends Application {
         for(int i=(currPage*4); i<(max); i++){
             imgs[i-currPage*4].setImage(new Image(new FileInputStream(cars.get(i).getImgPath())));
             lbls[i-currPage*4].setText(cars.get(i).getMake() + " " + cars.get(i).getModel());
+
+            if(cars.get(i).getBookingID()==null){
+                btns[i-currPage*4].setDisable(false);
+            }else{
+                btns[i-currPage*4].setDisable(true);
+            }
 
             if(i-currPage*4==0){
                 gridpane.add(vboxes[i-currPage*4], 0, 1);

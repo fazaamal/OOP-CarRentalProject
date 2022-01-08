@@ -1,6 +1,6 @@
 public class Car {
     private String carId, bookingID = null, make, model, type, colour, imgPath, fuel;
-    private int year, seats, daysRented = 0;
+    private int year, seats;
     private double costPerDay, tyreSize, weight;
 
     public Car(String carId, String make, String model, String type, String colour, String fuel, String imgPath, int year, int seats, double costPerDay, double tyreSize, double weight) {
@@ -24,10 +24,6 @@ public class Car {
 
     public String getBookingID() {
         return bookingID;
-    }
-
-    public int getDaysRented() {
-        return daysRented;
     }
 
     public String getImgPath() {
@@ -80,10 +76,6 @@ public class Car {
 
     public void setBookingID(String bookingID) {
         this.bookingID = bookingID;
-    }
-
-    public void setDaysRented(int daysRented) {
-        this.daysRented = daysRented;
     }
 
     public void setImgPath(String imgPath) {
