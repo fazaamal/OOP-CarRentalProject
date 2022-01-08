@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,6 +20,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import static java.lang.Integer.parseInt;
 
 public class MainStage extends Application {
     //Initialising car objects
@@ -43,10 +47,12 @@ public class MainStage extends Application {
     private Car[] cars = {teslaSObj, leafObj, mercObj, x70Obj, kiaObj, peroduaObj, fordObj, corsaObj, teslaXObj};
     private int currPage = 0;
     private boolean filtered = false;
+    private int buttonClicked = 0;
 
     private ArrayList<Car> carFilteredList = new ArrayList<Car>();
     private ArrayList<String> filters = new ArrayList<String>();
 
+    private Booking[] bookings = new Booking[cars.length];
     @Override
     public void start(Stage mainStage) throws Exception{
 
@@ -322,6 +328,11 @@ public class MainStage extends Application {
 
         Scene scene1 = new Scene(gridpane1, 660, 630);
 
+        mainStage.setTitle("IIUM Car Rental"); // Set the stage title
+        mainStage.setScene(scene1); // Place the scene in the stage
+        mainStage.setResizable(false);
+
+
         /*
         DESIGN OF CUSTOMER RENTAL FORM STAGE
          */
@@ -435,6 +446,32 @@ public class MainStage extends Application {
         gridpane3.add(vboxForm, 1, 1);
         gridpane3.add(vboxCarSelected, 2, 1);
 
+        TextField[] textFields = {textName, textPhone, textIC, textAddress, textDays, textCardNo, textExpiryMonth, textExpiryYear};
+
+        Scene sceneForm = new Scene(gridpane3, 700, 470);
+
+        Stage customerFormStage = new Stage();
+        customerFormStage.setScene(sceneForm);
+        customerFormStage.setTitle("Customer Rental Form");
+        customerFormStage.setResizable(false);
+
+        /*
+        ONCHANGE EVENT HANDLING
+         */
+
+        textDays.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                if(filtered){
+                    System.out.println(filtered);
+                    lblTotal.setText("Total is RM" + parseInt(textDays.getText())*carFilteredList.get(currPage*4+buttonClicked).getCostPerDay());
+                }else{
+                    System.out.println(filtered);
+                    lblTotal.setText("Total is RM" + parseInt(textDays.getText())*cars[currPage*4+buttonClicked].getCostPerDay());
+                }
+            }
+        });
+
         /*
         CLICK EVENT HANDLING
          */
@@ -483,14 +520,105 @@ public class MainStage extends Application {
             }
         });
 
+        buttonSubmit.setOnMouseClicked((event) -> {
+            javafx.scene.Node source1 = (javafx.scene.Node) event.getSource();
+            if(source1==buttonSubmit){
+                if(filtered){
+                    for(int i=0; i<cars.length; i++){
+                        if(bookings[i]==null){
+                            bookings[i] = new Booking(("B"+(i+1)), carFilteredList.get(currPage*4+buttonClicked).getCarId(), parseInt(textDays.getText()), textName.getText(), textIC.getText(), textAddress.getText(), textPhone.getText(), textCardNo.getText(),
+                                    parseInt(textExpiryMonth.getText()), parseInt(textExpiryYear.getText()), parseInt(textDays.getText())*carFilteredList.get(currPage*4+buttonClicked).getCostPerDay());
+                            carFilteredList.get(currPage*4+buttonClicked).setBookingID(("B"+(i+1)));
+                        }else{
+                            continue;
+                        }
+                    }
+                }else{
+                    for(int i=0; i<cars.length; i++){
+                        if(bookings[i]==null){
+                            bookings[i] = new Booking(("B"+(i+1)), cars[currPage*4+buttonClicked].getCarId(), parseInt(textDays.getText()), textName.getText(), textIC.getText(), textAddress.getText(), textPhone.getText(), textCardNo.getText(),
+                                    parseInt(textExpiryMonth.getText()), parseInt(textExpiryYear.getText()), parseInt(textDays.getText())*cars[currPage*4+buttonClicked].getCostPerDay());
+                            cars[currPage*4+buttonClicked].setBookingID(("B"+(i+1)));
+                        }else{
+                            continue;
+                        }
+                    }
+                }
+//                System.out.println(bookings[0].getBookingID() +" " + bookings[0].getName());
+
+                for(TextField textField: textFields){
+                    textField.setText("");
+                }
+
+                customerFormStage.close();
+            }
+        });
+
         buttonRent1.setOnMouseClicked((event) -> {    // lambda expression
             javafx.scene.Node source = (javafx.scene.Node) event.getSource();
-            if(source == buttonRent1) {
-                if(filtered){
-                    displayInfo(carSpecs, carFilteredList.get(currPage*4+0));
-                }else{
-                    displayInfo(carSpecs, cars[currPage*4+0]);
+            try{
+                if(source == buttonRent1) {
+                    buttonClicked = 0;
+                    customerFormStage.show();
+                    if(filtered){
+                        loadForm(carFilteredList.get(currPage*4+0), imgCarSelected, lblCarSelected);
+                    }else{
+                        loadForm(cars[currPage*4+0], imgCarSelected, lblCarSelected);
+                    }
                 }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        });
+
+        buttonRent2.setOnMouseClicked((event) -> {    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            try{
+                if(source == buttonRent2) {
+                    buttonClicked = 1;
+                    customerFormStage.show();
+                    if(filtered){
+                        loadForm(carFilteredList.get(currPage*4+1), imgCarSelected, lblCarSelected);
+                    }else{
+                        loadForm(cars[currPage*4+1], imgCarSelected, lblCarSelected);
+                    }
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        });
+
+        buttonRent3.setOnMouseClicked((event) -> {    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            try{
+                if(source == buttonRent3) {
+                    buttonClicked = 2;
+                    customerFormStage.show();
+                    if(filtered){
+                        loadForm(carFilteredList.get(currPage*4+2), imgCarSelected, lblCarSelected);
+                    }else{
+                        loadForm(cars[currPage*4+2], imgCarSelected, lblCarSelected);
+                    }
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        });
+
+        buttonRent4.setOnMouseClicked((event) -> {    // lambda expression
+            javafx.scene.Node source = (javafx.scene.Node) event.getSource();
+            try{
+                if(source == buttonRent4) {
+                    buttonClicked = 3;
+                    customerFormStage.show();
+                    if(filtered){
+                        loadForm(carFilteredList.get(currPage*4+3), imgCarSelected, lblCarSelected);
+                    }else{
+                        loadForm(cars[currPage*4+3], imgCarSelected, lblCarSelected);
+                    }
+                }
+            }catch (IOException e){
+                e.printStackTrace();
             }
         });
 
@@ -692,17 +820,8 @@ public class MainStage extends Application {
             }
         });
 
-        Scene sceneForm = new Scene(gridpane3, 700, 470);
-
-        Stage customerFormStage = new Stage();
-        customerFormStage.setScene(sceneForm);
-        customerFormStage.setTitle("Customer Rental Form");
-
-        mainStage.setTitle("IIUM Car Rental"); // Set the stage title
-        mainStage.setScene(scene1); // Place the scene in the stage
-        mainStage.setResizable(false);
         mainStage.show(); // Display the stage
-        customerFormStage.show();
+//        customerFormStage.show();
     }
 
     //Load listings when app launched or when filter is reset
@@ -790,6 +909,11 @@ public class MainStage extends Application {
             }
         }
 
+    }
+
+    public void loadForm(Car car, ImageView img, Label lbl) throws FileNotFoundException{
+        img.setImage(new Image(new FileInputStream(car.getImgPath())));
+        lbl.setText(car.getMake() + " " +car.getModel() + "\nRM" + car.getCostPerDay() + " /Day");
     }
 
     //Displays car info in the Text Area node
